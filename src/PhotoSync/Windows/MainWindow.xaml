@@ -47,11 +47,6 @@
             </Grid.ColumnDefinitions>
 
             <TreeView Grid.Column="0">
-                <!--<TreeView.Resources>
-                    <Style TargetType="{x:Type ScrollViewer}">
-                        <Setter Property="Template" Value="{DynamicResource AppleStyleScrollBarStyle}"/>
-                    </Style>
-                </TreeView.Resources>-->
                 <TreeViewItem Header="Employee1">
                     <TreeViewItem Header="Jesper"/>
                     <TreeViewItem Header="Aaberg"/>
@@ -114,23 +109,17 @@
                 </TreeViewItem>
             </TreeView>
 
-
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"  />
             <DockPanel Grid.Column="2">
                 <ToolBarTray DockPanel.Dock="Top">
                     <ToolBar>
-                        <Button Command="New" Content="New" />
-                        <Button Command="Open" Content="Open" />
-                        <Button Command="Save" Content="Save" />
-                    </ToolBar>
-                    <ToolBar>
-                        <Button Command="Cut" Content="Cut" />
-                        <Button Command="Copy" Content="Copy" />
-                        <Button Command="Paste" Content="Paste" />
+                        <Button Content="Delete Local" />
+                        <Separator />
+                        <CheckBox Content="Sync Photo" />
                     </ToolBar>
                 </ToolBarTray>
 
-                <Image  />
+                <Image />
             </DockPanel>
         </Grid>
     </DockPanel>
