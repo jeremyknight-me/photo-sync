@@ -4,6 +4,7 @@
     {
         New = 0,
         Sync = 1,
-        Remove = 2
+        Ignore = 2,
+        Remove = 3
     }
 }
