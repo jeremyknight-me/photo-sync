@@ -9,6 +9,7 @@ namespace PhotoSync.Data.Entities
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
         public string RelativePath { get; set; }
+        public PhotoAction ProcessAction { get; set; } = PhotoAction.New;
         public bool IsOrphaned { get; set; } = false;
         public bool IsNew { get; set; } = false;
         public DateTimeOffset DateCreated { get; private set; } = DateTimeOffset.Now;
@@ -18,7 +19,7 @@ namespace PhotoSync.Data.Entities
     {
         public void Configure(EntityTypeBuilder<Photo> builder)
         {
-            builder.ToTable("Photo");
+            builder.ToTable("Photos");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.RelativePath).IsRequired();
