@@ -16,6 +16,10 @@
                 <Separator />
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
             </MenuItem>
+            <MenuItem Header="Fil_ter">
+                <MenuItem Header="Show _New" IsCheckable="True" />
+                <MenuItem Header="Show _Orphaned" IsCheckable="True" />
+            </MenuItem>
         </Menu>
 
         <StatusBar DockPanel.Dock="Bottom">
