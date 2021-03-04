@@ -5,6 +5,16 @@ namespace PhotoSync.Data.Entities
 {
     public class Setting
     {
+        public Setting()
+        {
+        }
+
+        public Setting(string key, string value)
+        {
+            this.Key = key;
+            this.Value = value;
+        }
+
         public string Key { get; set; }
         public string Value { get; set; }
     }

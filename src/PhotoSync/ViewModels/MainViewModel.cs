@@ -10,13 +10,12 @@ namespace PhotoSync.ViewModels
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
-        private string selectedLibrary;
         private string selectedPhoto;
 
         public MainViewModel()
         {
             this.ExitCommand = new ShutdownCommand();
-
+            this.NewCommand = new NewCommand();
             this.PhotoActionOptions = new ObservableCollection<KeyValuePair<int, string>>(PhotoActionHelper.MakeEnumerable());
         }
 
@@ -31,14 +30,14 @@ namespace PhotoSync.ViewModels
 
         public string SelectedLibrary
         {
-            get => string.IsNullOrWhiteSpace(this.selectedLibrary)
+            get => string.IsNullOrWhiteSpace(AppState.Instance.SelectedLibrary)
                 ? "No Sync Database Selected..."
-                : this.selectedLibrary;
+                : AppState.Instance.SelectedLibrary;
             private set
             {
-                if (this.selectedLibrary != value)
+                if (AppState.Instance.SelectedLibrary != value)
                 {
-                    this.selectedLibrary = value;
+                    AppState.Instance.SelectedLibrary = value;
                     this.NotifyPropertyChanged();
                 }
             }

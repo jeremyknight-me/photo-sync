@@ -20,8 +20,11 @@ namespace PhotoSync.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // invalid data source used to allow ef migrations to work
-            optionsBuilder.UseSqlite("Data Source=foo.dat");  
+            if (!optionsBuilder.IsConfigured)
+            {
+                // invalid data source used to allow ef migrations to work
+                optionsBuilder.UseSqlite("Data Source=foo.dat");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

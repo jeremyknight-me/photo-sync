@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSync", "PhotoSync\PhotoSync.csproj", "{49D9993F-8ABF-4C9A-8C17-3476A9F855CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSync.Data", "PhotoSync.Data\PhotoSync.Data.csproj", "{7EADA7E7-6F8E-4FCB-8362-BD11D9F05F28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSync.Data", "PhotoSync.Data\PhotoSync.Data.csproj", "{7EADA7E7-6F8E-4FCB-8362-BD11D9F05F28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
