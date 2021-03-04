@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PhotoSync.Models;
+﻿using PhotoSync.Models;
+using PhotoSync.Windows;
 
 namespace PhotoSync.Commands
 {
@@ -16,9 +12,10 @@ namespace PhotoSync.Commands
 
         private static void ExecuteMethod(object parameter)
         {
-
+            var window = new CreateLibraryWindow();
+            window.ShowDialog();
         }
 
-        private static bool CanExecuteMethod(object parameter) => string.IsNullOrWhiteSpace(AppState.Instance.SelectedLibrary);
+        private static bool CanExecuteMethod(object parameter) => AppState.Instance.Library is null;
     }
 }

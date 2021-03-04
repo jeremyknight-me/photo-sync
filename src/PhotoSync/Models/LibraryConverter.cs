@@ -8,7 +8,6 @@ namespace PhotoSync.Models
     {
         private const string destinationFolderKey = "destination_folder";
         private const string fileNameKey = "file_name";
-        private const string nameKey = "name";
         private const string sourceFolderKey = "source_folder";
 
         public static Library Convert(IList<Setting> settings)
@@ -17,7 +16,6 @@ namespace PhotoSync.Models
             {
                 { destinationFolderKey, (l, s) => l.DestinationFolder = s.Value },
                 { fileNameKey, (l, s) => l.FileName = s.Value },
-                { nameKey, (l, s) => l.Name = s.Value },
                 { sourceFolderKey, (l, s) => l.SourceFolder = s.Value }
             };
 
@@ -38,7 +36,6 @@ namespace PhotoSync.Models
             {
                 new(destinationFolderKey, library.DestinationFolder),
                 new(fileNameKey, library.FileName),
-                new(nameKey, library.Name),
                 new(sourceFolderKey, library.SourceFolder)
             };
     }

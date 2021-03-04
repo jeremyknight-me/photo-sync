@@ -28,21 +28,6 @@ namespace PhotoSync.ViewModels
 
         public int SelectedPhotoAction { get; set; }
 
-        public string SelectedLibrary
-        {
-            get => string.IsNullOrWhiteSpace(AppState.Instance.SelectedLibrary)
-                ? "No Sync Database Selected..."
-                : AppState.Instance.SelectedLibrary;
-            private set
-            {
-                if (AppState.Instance.SelectedLibrary != value)
-                {
-                    AppState.Instance.SelectedLibrary = value;
-                    this.NotifyPropertyChanged();
-                }
-            }
-        }
-
         public string SelectedPhoto
         {
             get => string.IsNullOrWhiteSpace(this.selectedPhoto)
