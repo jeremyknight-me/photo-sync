@@ -24,7 +24,7 @@ namespace PhotoSync.Models
             set => this.SetProperty("library", value);
         }
 
-        public PhotoSyncContext Make() => PhotoSyncContextFactory.Make(this.Library.DestinationFullPath);
+        public PhotoSyncContext Make(bool migrate = false) => PhotoSyncContextFactory.Make(this.Library.DestinationFullPath, migrate);
 
         private T GetProperty<T>(string key)
             => Application.Current.Properties[key] is null

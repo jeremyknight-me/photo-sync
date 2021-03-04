@@ -95,7 +95,8 @@ namespace PhotoSync.ViewModels
         {
             var dialog = new FolderBrowserDialog
             {
-                ShowNewFolderButton = false
+                ShowNewFolderButton = false,
+                RootFolder = Environment.SpecialFolder.MyPictures
             };
             if (!string.IsNullOrWhiteSpace(getFolder()))
             {
@@ -126,7 +127,7 @@ namespace PhotoSync.ViewModels
                 SourceFolder = this.sourceFolder
             };
 
-            using (var context = PhotoSyncContextFactory.Make(library.DestinationFullPath))
+            using (var context = PhotoSyncContextFactory.Make(library.DestinationFullPath, migrate: true))
             {
                 var settings = LibraryConverter.Convert(library);
                 context.Settings.AddRange(settings);

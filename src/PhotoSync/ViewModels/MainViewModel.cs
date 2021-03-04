@@ -16,6 +16,7 @@ namespace PhotoSync.ViewModels
         {
             this.ExitCommand = new ShutdownCommand();
             this.NewCommand = new NewCommand();
+            this.OpenCommand = new OpenCommand();
             this.PhotoActionOptions = new ObservableCollection<KeyValuePair<int, string>>(PhotoActionHelper.MakeEnumerable());
         }
 
@@ -23,6 +24,7 @@ namespace PhotoSync.ViewModels
 
         public ICommand ExitCommand { get; private set; }
         public ICommand NewCommand { get; private set; }
+        public ICommand OpenCommand { get; private set; }
 
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
 
