@@ -35,11 +35,11 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem Grid.Column="0">
-                <TextBlock Text="No Sync Database Selected..." />
+                <TextBlock Text="{Binding SelectedLibrary}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Text="No Photo Selected..." />
+                <TextBlock Text="{Binding SelectedPhoto}" />
             </StatusBarItem>
         </StatusBar>
 
