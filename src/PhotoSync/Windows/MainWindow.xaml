@@ -115,7 +115,11 @@
                     <ToolBar>
                         <Button Content="Delete Local" />
                         <Separator />
-                        <CheckBox Content="Sync Photo" />
+                        <Label>Action:</Label>
+                        <ComboBox SelectedValue="{Binding SelectedPhotoAction, Mode=TwoWay}"
+                                  ItemsSource="{Binding PhotoActionOptions, Mode=OneTime}"
+                                  SelectedValuePath="Key"
+                                  DisplayMemberPath="Value" />
                     </ToolBar>
                 </ToolBarTray>
 
