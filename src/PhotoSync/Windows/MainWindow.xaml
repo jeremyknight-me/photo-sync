@@ -15,13 +15,12 @@
                 <MenuItem Header="_New" Command="{Binding NewCommand}" CommandParameter="{Binding}" />
                 <MenuItem Header="_Open" Command="{Binding OpenCommand}" CommandParameter="{Binding}" />
                 <Separator />
-                <MenuItem Header="_Close" />
+                <MenuItem Header="_Close" Command="{Binding CloseLibraryCommand}" CommandParameter="{Binding}" />
                 <Separator />
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
             </MenuItem>
             <MenuItem Header="Fil_ter">
                 <MenuItem Header="Show _New" IsCheckable="True" />
-                <MenuItem Header="Show _Orphaned" IsCheckable="True" />
             </MenuItem>
         </Menu>
 

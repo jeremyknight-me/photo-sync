@@ -18,9 +18,9 @@ namespace PhotoSync.Models
 
         #endregion
 
-        public Library Library
+        public PhotoLibrary Library
         {
-            get => this.GetProperty<Library>("library");
+            get => this.GetProperty<PhotoLibrary>("library");
             set => this.SetProperty("library", value);
         }
 

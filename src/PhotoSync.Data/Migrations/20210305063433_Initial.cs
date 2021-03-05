@@ -14,8 +14,6 @@ namespace PhotoSync.Data.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     RelativePath = table.Column<string>(type: "TEXT", nullable: false),
                     ProcessAction = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsOrphaned = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsNew = table.Column<bool>(type: "INTEGER", nullable: false),
                     DateCreated = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

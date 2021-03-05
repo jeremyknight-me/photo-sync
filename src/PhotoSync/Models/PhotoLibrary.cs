@@ -1,6 +1,6 @@
 ﻿namespace PhotoSync.Models
 {
-    public class Library
+    public class PhotoLibrary
     {
         public string DestinationFolder { get; set; }
         public string DestinationFullPath => System.IO.Path.Combine(this.DestinationFolder, this.FileName);

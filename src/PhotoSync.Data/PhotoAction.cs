@@ -3,8 +3,7 @@
     public enum PhotoAction
     {
         New = 0,
-        Copy = 1,
-        Ignore = 2,
-        Remove = 3
+        Sync = 1,
+        Ignore = 2
     }
 }

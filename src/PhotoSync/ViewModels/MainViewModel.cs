@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PhotoSync.Commands;
+using PhotoSync.Data;
 using PhotoSync.Models;
 
 namespace PhotoSync.ViewModels
@@ -15,17 +16,20 @@ namespace PhotoSync.ViewModels
 
         public MainViewModel()
         {
+            this.CloseLibraryCommand = new CloseLibraryCommand();
             this.ExitCommand = new ShutdownCommand();
-            this.NewCommand = new NewCommand();
-            this.OpenCommand = new OpenCommand();
+            this.NewCommand = new NewLibraryCommand();
+            this.OpenCommand = new OpenLibraryCommand();
             this.PhotoActionOptions = new ObservableCollection<KeyValuePair<int, string>>(PhotoActionHelper.MakeEnumerable());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ICommand CloseLibraryCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
         public ICommand NewCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
+        
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
 
         public bool IsProcessing
@@ -58,12 +62,22 @@ namespace PhotoSync.ViewModels
             }
         }
 
-        public void SetLibrary(Library library)
+        public void SetLibrary(PhotoLibrary library)
         {
             this.StartProcessing();
             AppState.Instance.Library = library;
             this.SelectedLibrary = library.DestinationFolder;
+
+            var processor = new PhotoProcessor();
+            processor.Run(library);
+
             this.StopProcessing();
+        }
+
+        public void CloseLibrary()
+        {
+            this.SelectedLibrary = null;
+            AppState.Instance.Library = null;
         }
 
         private void StartProcessing() => this.IsProcessing = true;

@@ -10,7 +10,6 @@ namespace PhotoSync.Data.Entities
         public Guid Id { get; private set; } = Guid.NewGuid();
         public string RelativePath { get; set; }
         public PhotoAction ProcessAction { get; set; } = PhotoAction.New;
-        public bool IsOrphaned { get; set; } = false;
         public DateTimeOffset DateCreated { get; private set; } = DateTimeOffset.Now;
     }
 

@@ -9,7 +9,7 @@ using PhotoSync.Data;
 namespace PhotoSync.Data.Migrations
 {
     [DbContext(typeof(PhotoSyncContext))]
-    [Migration("20210303002604_Initial")]
+    [Migration("20210305063433_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,12 +27,6 @@ namespace PhotoSync.Data.Migrations
                     b.Property<string>("DateCreated")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsNew")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsOrphaned")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("ProcessAction")
                         .HasColumnType("INTEGER");

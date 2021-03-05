@@ -7,7 +7,7 @@ namespace PhotoSync.Models
     public static class PhotoActionHelper
     {
         public static IEnumerable<KeyValuePair<int, string>> MakeEnumerable()
-            => new List<PhotoAction> { PhotoAction.New, PhotoAction.Copy, PhotoAction.Ignore, PhotoAction.Remove }
+            => new List<PhotoAction> { PhotoAction.New, PhotoAction.Sync, PhotoAction.Ignore }
                 .Select(x => new KeyValuePair<int, string>((int)x, x.ToString()))
                 .OrderBy(x => x.Value);
     }

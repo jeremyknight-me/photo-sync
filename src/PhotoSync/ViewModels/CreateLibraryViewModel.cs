@@ -24,8 +24,8 @@ namespace PhotoSync.ViewModels
                 obj =>
                 {
                     var library = this.CreateLibrary();
-                    mainViewModel.SetLibrary(library);
                     this.Close();
+                    mainViewModel.SetLibrary(library);
                 },
                 obj =>
                 {
@@ -120,9 +120,9 @@ namespace PhotoSync.ViewModels
             }
         }
 
-        private Library CreateLibrary()
+        private PhotoLibrary CreateLibrary()
         {
-            var library = new Library
+            var library = new PhotoLibrary
             {
                 DestinationFolder = this.destinationFolder,
                 FileName = this.fileName,
@@ -131,7 +131,7 @@ namespace PhotoSync.ViewModels
 
             using (var context = PhotoSyncContextFactory.Make(library.DestinationFullPath, migrate: true))
             {
-                var settings = LibraryConverter.Convert(library);
+                var settings = PhotoLibraryConverter.Convert(library);
                 context.Settings.AddRange(settings);
                 _ = context.SaveChanges();
             }

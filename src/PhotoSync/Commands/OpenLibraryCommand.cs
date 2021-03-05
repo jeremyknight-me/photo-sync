@@ -8,9 +8,9 @@ using PhotoSync.ViewModels;
 
 namespace PhotoSync.Commands
 {
-    internal class OpenCommand : RelayCommand
+    internal class OpenLibraryCommand : RelayCommand
     {
-        public OpenCommand()
+        public OpenLibraryCommand()
             : base(ExecuteMethod, CanExecuteMethod)
         {
         }
@@ -38,7 +38,7 @@ namespace PhotoSync.Commands
                 {
                     using var context = PhotoSyncContextFactory.Make(path);
                     var settings = context.Settings.ToArray();
-                    var library = LibraryConverter.Convert(settings);
+                    var library = PhotoLibraryConverter.Convert(settings);
                     (parameter as MainViewModel).SetLibrary(library);
                 }
             }

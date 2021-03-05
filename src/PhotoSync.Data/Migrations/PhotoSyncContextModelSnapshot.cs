@@ -26,12 +26,6 @@ namespace PhotoSync.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsNew")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsOrphaned")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("ProcessAction")
                         .HasColumnType("INTEGER");
 

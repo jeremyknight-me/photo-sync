@@ -5,9 +5,9 @@ using PhotoSync.Windows;
 
 namespace PhotoSync.Commands
 {
-    internal class NewCommand : RelayCommand
+    internal class NewLibraryCommand : RelayCommand
     {
-        public NewCommand()
+        public NewLibraryCommand()
             : base(ExecuteMethod, CanExecuteMethod)
         {
         }
