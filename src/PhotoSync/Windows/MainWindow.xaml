@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:PhotoSync.Windows"
         mc:Ignorable="d"
         Title="PhotoSync" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -27,8 +30,9 @@
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                     </Grid>
@@ -39,7 +43,11 @@
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Text="{Binding SelectedPhoto}" />
+                <TextBlock Text="Processing..." Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibility}}" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="3" HorizontalContentAlignment="Right" >
+                <ProgressBar IsIndeterminate="True" Height="15" HorizontalAlignment="Stretch" Width="100" 
+                             Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibility}}" />
             </StatusBarItem>
         </StatusBar>
 

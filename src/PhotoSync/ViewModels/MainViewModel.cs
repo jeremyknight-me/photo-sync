@@ -5,14 +5,13 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PhotoSync.Commands;
 using PhotoSync.Models;
-using PhotoSync.Windows;
 
 namespace PhotoSync.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private bool isProcessing = false;
         private string selectedLibrary;
-        private string selectedPhoto;
 
         public MainViewModel()
         {
@@ -28,6 +27,19 @@ namespace PhotoSync.ViewModels
         public ICommand NewCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
+
+        public bool IsProcessing
+        {
+            get => this.isProcessing;
+            private set
+            {
+                if (this.isProcessing != value)
+                {
+                    this.isProcessing = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
 
         public int SelectedPhotoAction { get; set; }
 
@@ -46,26 +58,16 @@ namespace PhotoSync.ViewModels
             }
         }
 
-        public string SelectedPhoto
-        {
-            get => string.IsNullOrWhiteSpace(this.selectedPhoto)
-                ? "Photo: None Selected..."
-                : $"Photo: {this.selectedPhoto}";
-            private set
-            {
-                if (this.selectedPhoto != value)
-                {
-                    this.selectedPhoto = value;
-                    this.NotifyPropertyChanged();
-                }
-            }
-        }
-
         public void SetLibrary(Library library)
         {
+            this.StartProcessing();
             AppState.Instance.Library = library;
             this.SelectedLibrary = library.DestinationFolder;
+            this.StopProcessing();
         }
+
+        private void StartProcessing() => this.IsProcessing = true;
+        private void StopProcessing() => this.IsProcessing = false;
 
         // This method is called by the Set accessor of each property.  
         // The CallerMemberName attribute that is applied to the optional propertyName  
