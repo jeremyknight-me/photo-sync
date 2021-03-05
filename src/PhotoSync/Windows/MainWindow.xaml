@@ -19,7 +19,10 @@
                 <Separator />
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
             </MenuItem>
-            <MenuItem Header="Fil_ter">
+            <MenuItem Header="_Library">
+                <MenuItem Header="_Sync" />
+                <MenuItem Header="_Refresh" />
+                <Separator />
                 <MenuItem Header="Show _New" IsCheckable="True" />
             </MenuItem>
         </Menu>
@@ -31,7 +34,6 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                     </Grid>
@@ -41,12 +43,8 @@
                 <TextBlock Text="{Binding SelectedLibrary}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
-            <StatusBarItem Grid.Column="2">
+            <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Right">
                 <TextBlock Text="Processing..." Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibility}}" />
-            </StatusBarItem>
-            <StatusBarItem Grid.Column="3" HorizontalContentAlignment="Right" >
-                <ProgressBar IsIndeterminate="True" Height="15" HorizontalAlignment="Stretch" Width="100" 
-                             Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibility}}" />
             </StatusBarItem>
         </StatusBar>
 
@@ -121,19 +119,18 @@
             </TreeView>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"  />
-            <DockPanel Grid.Column="2">
+            <DockPanel Grid.Column="2" Background="#333">
                 <ToolBarTray DockPanel.Dock="Top">
                     <ToolBar>
-                        <Button Content="Delete Local" />
-                        <Separator />
-                        <Label>Action:</Label>
+                        <Label Content="Action:" />
                         <ComboBox SelectedValue="{Binding SelectedPhotoAction, Mode=TwoWay}"
                                   ItemsSource="{Binding PhotoActionOptions, Mode=OneTime}"
                                   SelectedValuePath="Key"
                                   DisplayMemberPath="Value" />
+                        <Separator />
+                        <Label Content="Photo Path" />
                     </ToolBar>
                 </ToolBarTray>
-
                 <Image />
             </DockPanel>
         </Grid>
