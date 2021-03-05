@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoSync.Windows"
+        xmlns:models="clr-namespace:PhotoSync.Models"
         mc:Ignorable="d"
         Title="PhotoSync" Height="450" Width="800">
     <Window.Resources>
@@ -55,67 +56,15 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TreeView Grid.Column="0">
-                <TreeViewItem Header="Employee1">
-                    <TreeViewItem Header="Jesper"/>
-                    <TreeViewItem Header="Aaberg"/>
-                    <TreeViewItem Header="12345"/>
-                </TreeViewItem>
-                <TreeViewItem Header="Employee2">
-                    <TreeViewItem Header="Dominik"/>
-                    <TreeViewItem Header="Paiha"/>
-                    <TreeViewItem Header="98765"/>
-                    <TreeViewItem Header="Employee1">
-                        <TreeViewItem Header="Jesper"/>
-                        <TreeViewItem Header="Aaberg"/>
-                        <TreeViewItem Header="12345"/>
-                    </TreeViewItem>
-                    <TreeViewItem Header="Employee2">
-                        <TreeViewItem Header="Dominik"/>
-                        <TreeViewItem Header="Paiha"/>
-                        <TreeViewItem Header="98765"/>
-                        <TreeViewItem Header="Employee1">
-                            <TreeViewItem Header="Jesper"/>
-                            <TreeViewItem Header="Aaberg"/>
-                            <TreeViewItem Header="12345"/>
-                        </TreeViewItem>
-                        <TreeViewItem Header="Employee2">
-                            <TreeViewItem Header="Dominik"/>
-                            <TreeViewItem Header="Paiha"/>
-                            <TreeViewItem Header="98765"/>
-                            <TreeViewItem Header="Employee1">
-                                <TreeViewItem Header="Jesper"/>
-                                <TreeViewItem Header="Aaberg"/>
-                                <TreeViewItem Header="12345"/>
-                            </TreeViewItem>
-                            <TreeViewItem Header="Employee2">
-                                <TreeViewItem Header="Dominik"/>
-                                <TreeViewItem Header="Paiha"/>
-                                <TreeViewItem Header="98765"/>
-                                <TreeViewItem Header="Employee1">
-                                    <TreeViewItem Header="Jesper"/>
-                                    <TreeViewItem Header="Aaberg"/>
-                                    <TreeViewItem Header="12345"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="Employee2">
-                                    <TreeViewItem Header="Dominik"/>
-                                    <TreeViewItem Header="Paiha"/>
-                                    <TreeViewItem Header="98765"/>
-                                    <TreeViewItem Header="Employee1">
-                                        <TreeViewItem Header="Jesper"/>
-                                        <TreeViewItem Header="Aaberg"/>
-                                        <TreeViewItem Header="12345"/>
-                                    </TreeViewItem>
-                                    <TreeViewItem Header="Employee2">
-                                        <TreeViewItem Header="Dominik"/>
-                                        <TreeViewItem Header="Paiha"/>
-                                        <TreeViewItem Header="98765"/>
-                                    </TreeViewItem>
-                                </TreeViewItem>
-                            </TreeViewItem>
-                        </TreeViewItem>
-                    </TreeViewItem>
-                </TreeViewItem>
+            <TreeView Grid.Column="0" ItemsSource="{Binding TreeViewItems}">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type models:TreeViewDirectoryItem}" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type models:TreeViewFileItem}">
+                        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+                    </DataTemplate>
+                </TreeView.Resources>
             </TreeView>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"  />

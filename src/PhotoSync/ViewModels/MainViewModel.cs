@@ -13,9 +13,11 @@ namespace PhotoSync.ViewModels
     {
         private bool isProcessing = false;
         private string selectedLibrary;
+        private List<TreeViewItemBase> treeViewItems;
 
         public MainViewModel()
         {
+            this.treeViewItems = new List<TreeViewItemBase>();
             this.CloseLibraryCommand = new CloseLibraryCommand();
             this.ExitCommand = new ShutdownCommand();
             this.NewCommand = new NewLibraryCommand();
@@ -62,6 +64,16 @@ namespace PhotoSync.ViewModels
             }
         }
 
+        public List<TreeViewItemBase> TreeViewItems
+        {
+            get => this.treeViewItems;
+            set
+            {
+                this.treeViewItems = value;
+                this.NotifyPropertyChanged();
+            }
+        }
+
         public void SetLibrary(PhotoLibrary library)
         {
             this.StartProcessing();
@@ -71,6 +83,8 @@ namespace PhotoSync.ViewModels
             var processor = new PhotoProcessor();
             processor.Run(library);
 
+            var treeViewItemProvider = new TreeViewItemProvider();
+            this.TreeViewItems = treeViewItemProvider.GetChildren(library.SourceFolder);
             this.StopProcessing();
         }
 
