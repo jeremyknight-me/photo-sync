@@ -10,5 +10,7 @@ namespace PhotoSync.Models
         }
 
         public List<TreeViewItemBase> Children { get; set; }
+
+        public override bool IsFile => false;
     }
 }

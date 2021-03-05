@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using PhotoSync.Models;
 
 namespace PhotoSync.Data
@@ -20,10 +21,16 @@ namespace PhotoSync.Data
                     Children = this.GetChildren(directory.FullName)
                 };
 
-                items.Add(item);
+                if (item.Children.Any())
+                {
+                    items.Add(item);
+                }
             }
 
-            foreach (var file in directoryInfo.GetFiles())
+            var jpgs = directoryInfo.GetFiles("*.jpg", SearchOption.TopDirectoryOnly);
+            var jpegs = directoryInfo.GetFiles("*.jpeg", SearchOption.TopDirectoryOnly);
+            var pngs = directoryInfo.GetFiles("*.png", SearchOption.TopDirectoryOnly);
+            foreach (var file in jpegs.Union(jpgs).Union(pngs))
             {
                 var item = new TreeViewFileItem
                 {
