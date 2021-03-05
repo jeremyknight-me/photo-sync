@@ -8,9 +8,9 @@ namespace PhotoSync.Windows
     /// </summary>
     public partial class CreateLibraryWindow : Window
     {
-        public CreateLibraryWindow()
+        public CreateLibraryWindow(CreateLibraryViewModel viewModel)
         {
-            this.DataContext = new CreateLibraryViewModel(this);
+            this.DataContext = viewModel;
             this.InitializeComponent();
         }
     }

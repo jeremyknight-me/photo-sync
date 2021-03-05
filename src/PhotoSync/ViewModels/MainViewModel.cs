@@ -5,11 +5,13 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PhotoSync.Commands;
 using PhotoSync.Models;
+using PhotoSync.Windows;
 
 namespace PhotoSync.ViewModels
 {
-    internal class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
+        private string selectedLibrary;
         private string selectedPhoto;
 
         public MainViewModel()
@@ -25,16 +27,30 @@ namespace PhotoSync.ViewModels
         public ICommand ExitCommand { get; private set; }
         public ICommand NewCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
-
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
 
         public int SelectedPhotoAction { get; set; }
 
+        public string SelectedLibrary
+        {
+            get => string.IsNullOrWhiteSpace(this.selectedLibrary)
+                ? "Library: None Selected..."
+                : $"Library: {this.selectedLibrary}";
+            private set
+            {
+                if (this.selectedLibrary != value)
+                {
+                    this.selectedLibrary = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
         public string SelectedPhoto
         {
             get => string.IsNullOrWhiteSpace(this.selectedPhoto)
-                ? "No Photo Selected..."
-                : this.selectedPhoto;
+                ? "Photo: None Selected..."
+                : $"Photo: {this.selectedPhoto}";
             private set
             {
                 if (this.selectedPhoto != value)
@@ -43,6 +59,12 @@ namespace PhotoSync.ViewModels
                     this.NotifyPropertyChanged();
                 }
             }
+        }
+
+        public void SetLibrary(Library library)
+        {
+            AppState.Instance.Library = library;
+            this.SelectedLibrary = library.DestinationFolder;
         }
 
         // This method is called by the Set accessor of each property.  

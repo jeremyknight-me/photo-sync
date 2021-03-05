@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -16,14 +17,15 @@ namespace PhotoSync.ViewModels
         private string fileName = "photo-sync.db";
         private string sourceFolder;
 
-        public CreateLibraryViewModel(CreateLibraryWindow window)
+        public CreateLibraryViewModel(MainViewModel mainViewModel)
         {
-            this.CancelCommand = new RelayCommand(obj => window.Close());
+            this.CancelCommand = new RelayCommand(obj => this.Close());
             this.SaveCommand = new RelayCommand(
                 obj =>
                 {
-                    this.CreateLibrary();
-                    window.Close();
+                    var library = this.CreateLibrary();
+                    mainViewModel.SetLibrary(library);
+                    this.Close();
                 },
                 obj =>
                 {
@@ -118,7 +120,7 @@ namespace PhotoSync.ViewModels
             }
         }
 
-        private void CreateLibrary()
+        private Library CreateLibrary()
         {
             var library = new Library
             {
@@ -134,7 +136,13 @@ namespace PhotoSync.ViewModels
                 _ = context.SaveChanges();
             }
 
-            AppState.Instance.Library = library;
+            return library;
+        }
+
+        private void Close()
+        {
+            var window = System.Windows.Application.Current.Windows.OfType<CreateLibraryWindow>().SingleOrDefault(x => x.IsActive);
+            window?.Close();
         }
 
         // This method is called by the Set accessor of each property.  

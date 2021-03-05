@@ -9,8 +9,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="{Binding NewCommand}" />
-                <MenuItem Header="_Open" Command="{Binding OpenCommand}" />
+                <MenuItem Header="_New" Command="{Binding NewCommand}" CommandParameter="{Binding}" />
+                <MenuItem Header="_Open" Command="{Binding OpenCommand}" CommandParameter="{Binding}" />
                 <Separator />
                 <MenuItem Header="_Close" />
                 <Separator />
@@ -35,7 +35,7 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem Grid.Column="0">
-                <TextBlock Text="No Sync Database Selected..." />
+                <TextBlock Text="{Binding SelectedLibrary}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">

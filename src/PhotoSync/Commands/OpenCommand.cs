@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using PhotoSync.Data;
 using PhotoSync.Models;
+using PhotoSync.ViewModels;
 
 namespace PhotoSync.Commands
 {
@@ -16,6 +17,11 @@ namespace PhotoSync.Commands
 
         private static void ExecuteMethod(object parameter)
         {
+            if (!(parameter is MainViewModel))
+            {
+                throw new ArgumentException("Parameter must be the correct view model type.", nameof(parameter));
+            }
+
             var dialog = new OpenFileDialog
             {
                 Title = "Open Library",
@@ -33,7 +39,7 @@ namespace PhotoSync.Commands
                     using var context = PhotoSyncContextFactory.Make(path);
                     var settings = context.Settings.ToArray();
                     var library = LibraryConverter.Convert(settings);
-                    AppState.Instance.Library = library;
+                    (parameter as MainViewModel).SetLibrary(library);
                 }
             }
         }
