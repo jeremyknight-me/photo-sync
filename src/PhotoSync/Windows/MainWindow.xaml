@@ -22,7 +22,7 @@
             </MenuItem>
             <MenuItem Header="_Library">
                 <MenuItem Header="_Sync Files" />
-                <MenuItem Header="_Refresh" />
+                <MenuItem Header="_Refresh" Command="{Binding RefreshLibraryCommand}" CommandParameter="{Binding}" />
                 <Separator />
                 <MenuItem Header="Show _New" IsCheckable="True" />
             </MenuItem>

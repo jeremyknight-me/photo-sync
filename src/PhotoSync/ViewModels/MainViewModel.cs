@@ -13,24 +13,20 @@ namespace PhotoSync.ViewModels
     {
         private bool isProcessing = false;
         private string selectedLibrary;
-        private List<TreeViewItemBase> treeViewItems;
+        private List<TreeViewItemBase> treeViewItems = new List<TreeViewItemBase>();
 
         public MainViewModel()
         {
-            this.treeViewItems = new List<TreeViewItemBase>();
-            this.CloseLibraryCommand = new CloseLibraryCommand();
-            this.ExitCommand = new ShutdownCommand();
-            this.NewCommand = new NewLibraryCommand();
-            this.OpenCommand = new OpenLibraryCommand();
             this.PhotoActionOptions = new ObservableCollection<KeyValuePair<int, string>>(PhotoActionHelper.MakeEnumerable());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand CloseLibraryCommand { get; private set; }
-        public ICommand ExitCommand { get; private set; }
-        public ICommand NewCommand { get; private set; }
-        public ICommand OpenCommand { get; private set; }
+        public ICommand CloseLibraryCommand { get; private set; } = new CloseLibraryCommand();
+        public ICommand ExitCommand { get; private set; } = new ShutdownCommand();
+        public ICommand NewCommand { get; private set; } = new NewLibraryCommand();
+        public ICommand OpenCommand { get; private set; } = new OpenLibraryCommand();
+        public ICommand RefreshLibraryCommand { get; private set; } = new RefreshLibraryCommand();
         
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
 
@@ -79,10 +75,14 @@ namespace PhotoSync.ViewModels
             this.StartProcessing();
             AppState.Instance.Library = library;
             this.SelectedLibrary = library.DestinationFolder;
+            this.ProcessLibrary(library);
+            this.StopProcessing();
+        }
 
+        public void ProcessLibrary(PhotoLibrary library)
+        {
             var processor = new LibraryProcessor();
             this.TreeViewItems = processor.Run(library);
-            this.StopProcessing();
         }
 
         public void CloseLibrary()
