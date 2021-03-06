@@ -81,9 +81,6 @@ namespace PhotoSync.ViewModels
             this.SelectedLibrary = library.DestinationFolder;
 
             var processor = new LibraryProcessor();
-            //processor.Run(library);
-            //var treeViewItemProvider = new TreeViewItemProvider();
-            //this.TreeViewItems = treeViewItemProvider.GetChildren(library.SourceFolder);
             this.TreeViewItems = processor.Run(library);
             this.StopProcessing();
         }
