@@ -15,23 +15,29 @@ namespace PhotoSync.Data
         {
             var treeViewItemProvider = new TreeViewItemProvider();
             var items = treeViewItemProvider.GetChildren(library.SourceFolder);
-            var paths = this.GetFiles(items);
+            var fileItems = this.GetFiles(items);
+            var files = new ConcurrentBag<TreeViewFileItem>();
+            fileItems.ForEach(x => files.Add(x));
             var sourcePathLength = library.SourceFolder.Length;
             var exceptions = new ConcurrentQueue<Exception>();
-            Parallel.ForEach(paths, path =>
+            Parallel.ForEach(files, file =>
             {
-                var relativePath = path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
+                var relativePath = file.Path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
                 using var context = PhotoSyncContextFactory.Make(library.DestinationFullPath);
                 if (context.Photos.Any(x => x.RelativePath == relativePath))
                 {
-                    var sourceFilePath = Path.Combine(library.SourceFolder, relativePath);
-                    if (!File.Exists(sourceFilePath))
+                    var photo = context.Photos.FirstOrDefault(x => x.RelativePath == relativePath);
+                    if (photo != null)
                     {
-                        var photo = context.Photos.FirstOrDefault(x => x.RelativePath == relativePath);
-                        if (photo != null)
+                        var sourceFilePath = Path.Combine(library.SourceFolder, relativePath);
+                        if (!File.Exists(sourceFilePath))
                         {
                             context.Remove(photo);
                             context.SaveChanges();
+                        }
+                        else
+                        {
+                            file.Photo = photo;
                         }
                     }
                 }
@@ -40,6 +46,7 @@ namespace PhotoSync.Data
                     var photo = new Photo { RelativePath = relativePath };
                     context.Photos.Add(photo);
                     context.SaveChanges();
+                    file.Photo = photo;
                 }
             });
 
@@ -48,16 +55,16 @@ namespace PhotoSync.Data
                 : throw new AggregateException(exceptions);
         }
 
-        private List<string> GetFiles(IEnumerable<TreeViewItemBase> items)
+        private List<TreeViewFileItem> GetFiles(IEnumerable<TreeViewItemBase> items)
         {
-            var list = new List<string>();
+            var list = new List<TreeViewFileItem>();
             foreach (var directory in items.OfType<TreeViewDirectoryItem>())
             {
                 var directoryFiles = this.GetFiles(directory.Children);
                 list.AddRange(directoryFiles);
             }
 
-            list.AddRange(items.OfType<TreeViewFileItem>().Select(x => x.Path));
+            list.AddRange(items.OfType<TreeViewFileItem>());
             return list;
         }
     }

@@ -21,7 +21,7 @@
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
             </MenuItem>
             <MenuItem Header="_Library">
-                <MenuItem Header="_Sync" />
+                <MenuItem Header="_Sync Files" />
                 <MenuItem Header="_Refresh" />
                 <Separator />
                 <MenuItem Header="Show _New" IsCheckable="True" />
