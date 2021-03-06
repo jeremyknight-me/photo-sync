@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,15 +31,28 @@ namespace PhotoSync.Data
             }
 
             var bag = new ConcurrentBag<FileInfo>();
+            var exceptions = new ConcurrentBag<Exception>();
             var extensions = new string[] { "*.jpg", "*.jpeg", "*.png" };
             Parallel.ForEach(extensions, extension =>
             {
-                var files = directoryInfo.GetFiles(extension, SearchOption.TopDirectoryOnly);
-                foreach (var file in files)
+                try
                 {
-                    bag.Add(file);
+                    var files = directoryInfo.GetFiles(extension, SearchOption.TopDirectoryOnly);
+                    foreach (var file in files)
+                    {
+                        bag.Add(file);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
                 }
             });
+
+            if (!exceptions.IsEmpty)
+            {
+                throw new AggregateException(exceptions);
+            }
 
             foreach (var file in bag.OrderBy(x => x.FullName))
             {

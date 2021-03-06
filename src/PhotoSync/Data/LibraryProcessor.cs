@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,14 +9,18 @@ using PhotoSync.Models;
 
 namespace PhotoSync.Data
 {
-    public class PhotoProcessor
+    public class LibraryProcessor
     {
-        public void Run(PhotoLibrary library)
+        public List<TreeViewItemBase> Run(PhotoLibrary library)
         {
-            var relativePaths = new GetPhotoFilePathsQuery().Run(library.SourceFolder);
+            var treeViewItemProvider = new TreeViewItemProvider();
+            var items = treeViewItemProvider.GetChildren(library.SourceFolder);
+            var paths = this.GetFiles(items);
+            var sourcePathLength = library.SourceFolder.Length;
             var exceptions = new ConcurrentQueue<Exception>();
-            Parallel.ForEach(relativePaths, relativePath =>
+            Parallel.ForEach(paths, path =>
             {
+                var relativePath = path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
                 using var context = PhotoSyncContextFactory.Make(library.DestinationFullPath);
                 if (context.Photos.Any(x => x.RelativePath == relativePath))
                 {
@@ -38,10 +43,22 @@ namespace PhotoSync.Data
                 }
             });
 
-            if (!exceptions.IsEmpty)
+            return exceptions.IsEmpty
+                ? items
+                : throw new AggregateException(exceptions);
+        }
+
+        private List<string> GetFiles(IEnumerable<TreeViewItemBase> items)
+        {
+            var list = new List<string>();
+            foreach (var directory in items.OfType<TreeViewDirectoryItem>())
             {
-                throw new AggregateException(exceptions);
+                var directoryFiles = this.GetFiles(directory.Children);
+                list.AddRange(directoryFiles);
             }
+
+            list.AddRange(items.OfType<TreeViewFileItem>().Select(x => x.Path));
+            return list;
         }
     }
 }

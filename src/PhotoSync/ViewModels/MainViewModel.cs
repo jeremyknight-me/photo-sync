@@ -80,11 +80,11 @@ namespace PhotoSync.ViewModels
             AppState.Instance.Library = library;
             this.SelectedLibrary = library.DestinationFolder;
 
-            var processor = new PhotoProcessor();
-            processor.Run(library);
-
-            var treeViewItemProvider = new TreeViewItemProvider();
-            this.TreeViewItems = treeViewItemProvider.GetChildren(library.SourceFolder);
+            var processor = new LibraryProcessor();
+            //processor.Run(library);
+            //var treeViewItemProvider = new TreeViewItemProvider();
+            //this.TreeViewItems = treeViewItemProvider.GetChildren(library.SourceFolder);
+            this.TreeViewItems = processor.Run(library);
             this.StopProcessing();
         }
 
