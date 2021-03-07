@@ -14,12 +14,7 @@ namespace PhotoSync.Data
         public List<TreeViewItemBase> Run(PhotoLibrary library)
         {
             var treeViewItemProvider = new TreeViewItemProvider();
-
-            var watch = new System.Diagnostics.Stopwatch();
-            watch.Start();
             var items = treeViewItemProvider.GetChildren(library.SourceFolder);
-            watch.Stop();
-
             var fileItems = this.GetFiles(items);
             var files = new ConcurrentBag<TreeViewFileItem>();
             fileItems.ForEach(x => files.Add(x));
