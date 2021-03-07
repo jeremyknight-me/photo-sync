@@ -9,22 +9,49 @@
         Title="PhotoSync" Height="450" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style x:Key="IconText" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        </Style>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="{Binding NewCommand}" CommandParameter="{Binding}" />
-                <MenuItem Header="_Open" Command="{Binding OpenCommand}" CommandParameter="{Binding}" />
+                <MenuItem Header="_New" Command="{Binding NewCommand}" CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" Style="{StaticResource IconText}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Open" Command="{Binding OpenCommand}" CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xED25;" Style="{StaticResource IconText}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
-                <MenuItem Header="_Close" Command="{Binding CloseLibraryCommand}" CommandParameter="{Binding}" />
-                <Separator />
-                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8BB;" Style="{StaticResource IconText}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Library">
-                <MenuItem Header="_Sync Files" />
-                <MenuItem Header="_Refresh" Command="{Binding RefreshLibraryCommand}" CommandParameter="{Binding}" />
+                <MenuItem Header="_Sync Files">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Refresh" Command="{Binding RefreshLibraryCommand}" CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
-                <MenuItem Header="Show _New" IsCheckable="True" />
+                <MenuItem Header="Show _New" IsCheckable="True"></MenuItem>
+                <Separator />
+                <MenuItem Header="_Close" Command="{Binding CloseLibraryCommand}" CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8BB;" Style="{StaticResource IconText}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
 
@@ -59,10 +86,21 @@
             <TreeView Grid.Column="0" ItemsSource="{Binding TreeViewItems}">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type models:TreeViewDirectoryItem}" ItemsSource="{Binding Children}">
-                        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="&#xE8D5;" Style="{StaticResource IconText}" Foreground="#f8d876" />
+                            <TextBlock Grid.Column="0" Text="&#xE8B7;" Style="{StaticResource IconText}" />
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" Margin="5, 0, 0, 0" />
+                        </Grid>
                     </HierarchicalDataTemplate>
                     <DataTemplate DataType="{x:Type models:TreeViewFileItem}">
-                        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+                        <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=Path}">
+                            <TextBlock Text="&#xE7C3;" Style="{StaticResource IconText}" />
+                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" Margin="5, 0, 0, 0" />
+                        </StackPanel>
                     </DataTemplate>
                 </TreeView.Resources>
             </TreeView>
