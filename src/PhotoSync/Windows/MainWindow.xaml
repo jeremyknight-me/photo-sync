@@ -98,7 +98,7 @@
                     </HierarchicalDataTemplate>
                     <DataTemplate DataType="{x:Type models:TreeViewFileItem}">
                         <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=Path}">
-                            <TextBlock Text="&#xE7C3;" Style="{StaticResource IconText}" />
+                            <TextBlock Text="&#xEB9F;" Style="{StaticResource IconText}" />
                             <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" Margin="5, 0, 0, 0" />
                         </StackPanel>
                     </DataTemplate>
