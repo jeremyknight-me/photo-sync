@@ -83,7 +83,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TreeView Grid.Column="0" ItemsSource="{Binding TreeViewItems}">
+            <TreeView Grid.Column="0" ItemsSource="{Binding TreeViewItems}" SelectedItemChanged="TreeView_SelectedItemChanged">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type models:TreeViewDirectoryItem}" ItemsSource="{Binding Children}">
                         <Grid>
@@ -115,10 +115,11 @@
                                   SelectedValuePath="Key"
                                   DisplayMemberPath="Value" />
                         <Separator />
-                        <Label Content="Photo Path" />
+                        <Label Content="Photo Path:" />
+                        <Label Content="{Binding SelectedPhoto.RelativePath}" />
                     </ToolBar>
                 </ToolBarTray>
-                <Image />
+                <Image Source="{Binding SelectedPhotoPath}" />
             </DockPanel>
         </Grid>
     </DockPanel>

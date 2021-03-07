@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PhotoSync.Commands;
 using PhotoSync.Data;
+using PhotoSync.Data.Entities;
 using PhotoSync.Models;
 
 namespace PhotoSync.ViewModels
@@ -13,6 +14,9 @@ namespace PhotoSync.ViewModels
     {
         private bool isProcessing = false;
         private string selectedLibrary;
+        private TreeViewItemBase selectedItem;
+        private Photo selectedPhoto;
+        private string selectedPhotoPath;
         private List<TreeViewItemBase> treeViewItems = new List<TreeViewItemBase>();
 
         public MainViewModel()
@@ -43,8 +47,6 @@ namespace PhotoSync.ViewModels
             }
         }
 
-        public int SelectedPhotoAction { get; set; }
-
         public string SelectedLibrary
         {
             get => string.IsNullOrWhiteSpace(this.selectedLibrary)
@@ -55,6 +57,75 @@ namespace PhotoSync.ViewModels
                 if (this.selectedLibrary != value)
                 {
                     this.selectedLibrary = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public TreeViewItemBase SelectedItem
+        {
+            get => this.selectedItem;
+            set
+            {
+                this.selectedItem = value;
+                if (value is TreeViewFileItem)
+                {
+                    var item = value as TreeViewFileItem;
+                    this.SelectedPhotoPath = item.Path;
+                    this.SelectedPhoto = item.Photo;
+                }
+                else
+                {
+                    this.SelectedPhotoPath = string.Empty;
+                    this.SelectedPhoto = null;
+                }
+
+                this.NotifyPropertyChanged();
+            } 
+        }
+
+        public string SelectedPhotoPath
+        {
+            get => this.selectedPhotoPath;
+            set
+            {
+                if (this.selectedPhotoPath != value)
+                {
+                    this.selectedPhotoPath = value;
+                    this.NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public Photo SelectedPhoto
+        {
+            get => this.selectedPhoto;
+            set
+            {
+                this.selectedPhoto = value;
+                if (value != null)
+                {
+                    this.SelectedPhotoAction = (int)value.ProcessAction;
+                }
+                this.NotifyPropertyChanged();
+            }
+        }
+
+        public int SelectedPhotoAction
+        {
+            get
+            {
+                var value = this.selectedPhoto;
+                return value is null
+                    ? 0
+                    : (int)this.selectedPhoto.ProcessAction;
+            }
+            set
+            {
+                if (this.selectedPhoto != null)
+                {
+                    this.selectedPhoto.ProcessAction = (PhotoAction)value;
+                    this.SavePhoto();
                     this.NotifyPropertyChanged();
                 }
             }
@@ -93,6 +164,19 @@ namespace PhotoSync.ViewModels
 
         private void StartProcessing() => this.IsProcessing = true;
         private void StopProcessing() => this.IsProcessing = false;
+
+        private void SavePhoto()
+        {
+            if (AppState.Instance.Library is null)
+            {
+                return;
+            }
+
+            using var context = PhotoSyncContextFactory.Make(AppState.Instance.Library.DestinationFullPath);
+            var photo = context.Photos.Find(this.selectedPhoto.Id);
+            photo.ProcessAction = this.selectedPhoto.ProcessAction;
+            context.SaveChanges();
+        }
 
         // This method is called by the Set accessor of each property.  
         // The CallerMemberName attribute that is applied to the optional propertyName  

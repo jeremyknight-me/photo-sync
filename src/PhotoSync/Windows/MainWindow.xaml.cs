@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using PhotoSync.Models;
 using PhotoSync.ViewModels;
 
 namespace PhotoSync.Windows
@@ -12,6 +13,14 @@ namespace PhotoSync.Windows
         {
             this.DataContext = mainViewModel;
             this.InitializeComponent();
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is TreeViewItemBase)
+            {
+                (this.DataContext as MainViewModel).SelectedItem = e.NewValue as TreeViewItemBase;
+            }
         }
     }
 }
