@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using PhotoSync.Models;
 
 namespace PhotoSync.Data
@@ -30,31 +28,8 @@ namespace PhotoSync.Data
                 }
             }
 
-            var bag = new ConcurrentBag<FileInfo>();
-            var exceptions = new ConcurrentBag<Exception>();
-            var extensions = new string[] { "*.jpg", "*.jpeg", "*.png" };
-            Parallel.ForEach(extensions, extension =>
-            {
-                try
-                {
-                    var files = directoryInfo.GetFiles(extension, SearchOption.TopDirectoryOnly);
-                    foreach (var file in files)
-                    {
-                        bag.Add(file);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    exceptions.Add(ex);
-                }
-            });
-
-            if (!exceptions.IsEmpty)
-            {
-                throw new AggregateException(exceptions);
-            }
-
-            foreach (var file in bag.OrderBy(x => x.FullName))
+            var files = this.GetFiles(directoryInfo);
+            foreach (var file in files.OrderBy(x => x.FullName))
             {
                 var item = new TreeViewFileItem
                 {
@@ -66,6 +41,15 @@ namespace PhotoSync.Data
             }
 
             return items;
+        }
+
+        private IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        {
+            var extensions = new string[] { ".jpg", ".jpeg", ".png" };
+            var files = directoryInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
+            return files
+                .AsParallel()
+                .Where(x => extensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
         }
     }
 }

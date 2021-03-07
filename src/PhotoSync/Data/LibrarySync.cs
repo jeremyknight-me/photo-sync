@@ -11,7 +11,6 @@ namespace PhotoSync.Data
     {
         public void Run(PhotoLibrary library)
         {
-
         }
     }
 }
