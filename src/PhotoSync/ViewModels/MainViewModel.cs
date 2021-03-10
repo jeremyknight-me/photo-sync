@@ -31,7 +31,8 @@ namespace PhotoSync.ViewModels
         public ICommand NewCommand { get; private set; } = new NewLibraryCommand();
         public ICommand OpenCommand { get; private set; } = new OpenLibraryCommand();
         public ICommand RefreshLibraryCommand { get; private set; } = new RefreshLibraryCommand();
-        
+        public ICommand SyncLibraryCommand { get; private set; } = new SyncLibraryCommand();
+
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
 
         public bool IsProcessing

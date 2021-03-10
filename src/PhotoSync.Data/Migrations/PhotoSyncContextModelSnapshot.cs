@@ -22,10 +22,6 @@ namespace PhotoSync.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("ProcessAction")
                         .HasColumnType("INTEGER");
 

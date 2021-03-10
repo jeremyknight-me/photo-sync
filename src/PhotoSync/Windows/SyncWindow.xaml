@@ -1,0 +1,28 @@
+﻿<Window x:Class="PhotoSync.Windows.SyncWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PhotoSync.Windows"
+        mc:Ignorable="d"
+        Title="Synchronize Library" Height="400" Width="450">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="10, 4" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ListView ItemsSource="{Binding Logs}" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Sync" Command="{Binding SyncCommand}" />
+            <Button Content="Close" Command="{Binding CloseCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>

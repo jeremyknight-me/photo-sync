@@ -28,7 +28,7 @@ namespace PhotoSync.Data
                 }
             }
 
-            var files = this.GetFiles(directoryInfo);
+            var files = new GetFilesQuery().Run(directoryInfo);
             foreach (var file in files.OrderBy(x => x.FullName))
             {
                 var item = new TreeViewFileItem
@@ -41,15 +41,6 @@ namespace PhotoSync.Data
             }
 
             return items;
-        }
-
-        private IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
-        {
-            var extensions = new string[] { ".jpg", ".jpeg", ".png" };
-            var files = directoryInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
-            return files
-                .AsParallel()
-                .Where(x => extensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
         }
     }
 }

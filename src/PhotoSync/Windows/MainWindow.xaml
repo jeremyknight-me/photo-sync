@@ -34,7 +34,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Library">
-                <MenuItem Header="_Sync Files">
+                <MenuItem Header="_Sync Files" Command="{Binding SyncLibraryCommand}" CommandParameter="{Binding}">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" />
                     </MenuItem.Icon>

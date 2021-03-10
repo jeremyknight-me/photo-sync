@@ -19,34 +19,41 @@ namespace PhotoSync.Data
             var files = new ConcurrentBag<TreeViewFileItem>();
             fileItems.ForEach(x => files.Add(x));
             var sourcePathLength = library.SourceFolder.Length;
-            var exceptions = new ConcurrentQueue<Exception>();
+            var exceptions = new ConcurrentBag<Exception>();
             Parallel.ForEach(files, file =>
             {
-                var relativePath = file.Path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
-                using var context = PhotoSyncContextFactory.Make(library.DestinationFullPath);
-                if (context.Photos.Any(x => x.RelativePath == relativePath))
+                try
                 {
-                    var photo = context.Photos.FirstOrDefault(x => x.RelativePath == relativePath);
-                    if (photo != null)
+                    var relativePath = file.Path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
+                    using var context = PhotoSyncContextFactory.Make(library.DestinationFullPath);
+                    if (context.Photos.Any(x => x.RelativePath == relativePath))
                     {
-                        var sourceFilePath = Path.Combine(library.SourceFolder, relativePath);
-                        if (!File.Exists(sourceFilePath))
+                        var photo = context.Photos.FirstOrDefault(x => x.RelativePath == relativePath);
+                        if (photo != null)
                         {
-                            context.Remove(photo);
-                            context.SaveChanges();
-                        }
-                        else
-                        {
-                            file.Photo = photo;
+                            var sourceFilePath = Path.Combine(library.SourceFolder, relativePath);
+                            if (!File.Exists(sourceFilePath))
+                            {
+                                context.Photos.Remove(photo);
+                                context.SaveChanges();
+                            }
+                            else
+                            {
+                                file.Photo = photo;
+                            }
                         }
                     }
+                    else
+                    {
+                        var photo = new Photo { RelativePath = relativePath };
+                        context.Photos.Add(photo);
+                        context.SaveChanges();
+                        file.Photo = photo;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    var photo = new Photo { RelativePath = relativePath };
-                    context.Photos.Add(photo);
-                    context.SaveChanges();
-                    file.Photo = photo;
+                    exceptions.Add(ex);
                 }
             });
 

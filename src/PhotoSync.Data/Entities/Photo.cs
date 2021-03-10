@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace PhotoSync.Data.Entities
 {
@@ -10,7 +9,6 @@ namespace PhotoSync.Data.Entities
         public Guid Id { get; private set; } = Guid.NewGuid();
         public string RelativePath { get; set; }
         public PhotoAction ProcessAction { get; set; } = PhotoAction.New;
-        public DateTimeOffset DateCreated { get; private set; } = DateTimeOffset.Now;
     }
 
     internal class PhotoConfig : IEntityTypeConfiguration<Photo>
@@ -21,9 +19,6 @@ namespace PhotoSync.Data.Entities
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.RelativePath).IsRequired();
-
-            builder.Property(x => x.DateCreated)
-                .HasConversion(new DateTimeOffsetToStringConverter());
         }
     }
 }
