@@ -1,6 +1,6 @@
 ﻿using PhotoSync.Data.Entities;
 
-namespace PhotoSync.Models
+namespace PhotoSyncManager.Models
 {
     public class TreeViewFileItem : TreeViewItemBase
     {

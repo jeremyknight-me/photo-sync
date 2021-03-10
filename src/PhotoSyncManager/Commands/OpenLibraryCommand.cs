@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using PhotoSync.Data;
-using PhotoSync.Models;
-using PhotoSync.ViewModels;
+using PhotoSyncManager.Models;
+using PhotoSyncManager.ViewModels;
 
-namespace PhotoSync.Commands
+namespace PhotoSyncManager.Commands
 {
     internal class OpenLibraryCommand : RelayCommand
     {

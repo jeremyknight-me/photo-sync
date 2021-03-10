@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PhotoSync.Data;
 
-namespace PhotoSync.Models
+namespace PhotoSync.Data
 {
     public static class PhotoActionHelper
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhotoSync.Common;
 using PhotoSync.Data.Entities;
 
-namespace PhotoSync.Models
+namespace PhotoSync.Data
 {
     public static class PhotoLibraryConverter
     {

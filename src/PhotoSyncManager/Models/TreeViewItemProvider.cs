@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PhotoSync.Models;
+using PhotoSync.Common;
 
-namespace PhotoSync.Data
+namespace PhotoSyncManager.Models
 {
     public class TreeViewItemProvider
     {
@@ -28,7 +28,7 @@ namespace PhotoSync.Data
                 }
             }
 
-            var files = new GetFilesQuery().Run(directoryInfo);
+            var files = new GetPhotoFilesQuery().Run(directoryInfo);
             foreach (var file in files.OrderBy(x => x.FullName))
             {
                 var item = new TreeViewFileItem

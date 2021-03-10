@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using PhotoSync.Commands;
+using PhotoSync.Common;
 using PhotoSync.Data;
 using PhotoSync.Data.Entities;
-using PhotoSync.Models;
+using PhotoSyncManager.Commands;
+using PhotoSyncManager.Models;
 
-namespace PhotoSync.ViewModels
+namespace PhotoSyncManager.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
@@ -28,10 +33,8 @@ namespace PhotoSync.ViewModels
 
         public ICommand CloseLibraryCommand { get; private set; } = new CloseLibraryCommand();
         public ICommand ExitCommand { get; private set; } = new ShutdownCommand();
-        public ICommand NewCommand { get; private set; } = new NewLibraryCommand();
         public ICommand OpenCommand { get; private set; } = new OpenLibraryCommand();
         public ICommand RefreshLibraryCommand { get; private set; } = new RefreshLibraryCommand();
-        public ICommand SyncLibraryCommand { get; private set; } = new SyncLibraryCommand();
 
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
 
@@ -82,7 +85,7 @@ namespace PhotoSync.ViewModels
                 }
 
                 this.NotifyPropertyChanged();
-            } 
+            }
         }
 
         public string SelectedPhotoPath
@@ -160,6 +163,7 @@ namespace PhotoSync.ViewModels
         public void CloseLibrary()
         {
             this.SelectedLibrary = null;
+            this.TreeViewItems.Clear();
             AppState.Instance.Library = null;
         }
 

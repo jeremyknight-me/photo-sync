@@ -1,4 +1,4 @@
-﻿namespace PhotoSync.Models
+﻿namespace PhotoSync.Common
 {
     public class PhotoLibrary
     {

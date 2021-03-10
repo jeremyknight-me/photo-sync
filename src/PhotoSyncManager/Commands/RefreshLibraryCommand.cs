@@ -1,8 +1,8 @@
 ﻿using System;
-using PhotoSync.Models;
-using PhotoSync.ViewModels;
+using PhotoSyncManager.Models;
+using PhotoSyncManager.ViewModels;
 
-namespace PhotoSync.Commands
+namespace PhotoSyncManager.Commands
 {
     internal class RefreshLibraryCommand : RelayCommand
     {

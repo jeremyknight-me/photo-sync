@@ -1,4 +1,4 @@
-﻿namespace PhotoSync.Models
+﻿namespace PhotoSyncManager.Models
 {
     public abstract class TreeViewItemBase
     {

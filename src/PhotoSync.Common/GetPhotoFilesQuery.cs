@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace PhotoSync.Data
+namespace PhotoSync.Common
 {
-    public class GetFilesQuery
+    public class GetPhotoFilesQuery
     {
         public IEnumerable<FileInfo> Run(DirectoryInfo directoryInfo)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PhotoSync.Models
+namespace PhotoSyncManager.Models
 {
     public class TreeViewDirectoryItem : TreeViewItemBase
     {

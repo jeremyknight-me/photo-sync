@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
+using PhotoSync.Common;
 using PhotoSync.Data;
 
-namespace PhotoSync.Models
+namespace PhotoSyncManager.Models
 {
     public sealed class AppState 
     {

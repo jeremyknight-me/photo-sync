@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using PhotoSync.Common;
+using PhotoSync.Data;
 using PhotoSync.Data.Entities;
-using PhotoSync.Models;
 
-namespace PhotoSync.Data
+namespace PhotoSyncManager.Models
 {
     public class LibraryProcessor
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace PhotoSync.Commands
+namespace PhotoSyncManager.Commands
 {
     internal class ShutdownCommand : RelayCommand
     {
