@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using PhotoSync.Common;
 using PhotoSync.Data;
-using PhotoSync.Data.Entities;
 using PhotoSyncManager.Commands;
 using PhotoSyncManager.Models;
 
@@ -19,24 +15,23 @@ namespace PhotoSyncManager.ViewModels
     {
         private bool isProcessing = false;
         private string selectedLibrary;
-        private TreeViewItemBase selectedItem;
-        private Photo selectedPhoto;
-        private string selectedPhotoPath;
-        private List<TreeViewItemBase> treeViewItems = new List<TreeViewItemBase>();
 
         public MainViewModel()
         {
             this.PhotoActionOptions = new ObservableCollection<KeyValuePair<int, string>>(PhotoActionHelper.MakeEnumerable());
+            this.PhotoRecords = new ObservableCollection<PhotoRecord>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand CloseLibraryCommand { get; private set; } = new CloseLibraryCommand();
         public ICommand ExitCommand { get; private set; } = new ShutdownCommand();
+        public ICommand NewCommand { get; private set; } = new NewLibraryCommand();
         public ICommand OpenCommand { get; private set; } = new OpenLibraryCommand();
         public ICommand RefreshLibraryCommand { get; private set; } = new RefreshLibraryCommand();
 
         public ObservableCollection<KeyValuePair<int, string>> PhotoActionOptions { get; private set; }
+        public ObservableCollection<PhotoRecord> PhotoRecords { get; private set; }
 
         public bool IsProcessing
         {
@@ -66,85 +61,6 @@ namespace PhotoSyncManager.ViewModels
             }
         }
 
-        public TreeViewItemBase SelectedItem
-        {
-            get => this.selectedItem;
-            set
-            {
-                this.selectedItem = value;
-                if (value is TreeViewFileItem)
-                {
-                    var item = value as TreeViewFileItem;
-                    this.SelectedPhotoPath = item.Path;
-                    this.SelectedPhoto = item.Photo;
-                }
-                else
-                {
-                    this.SelectedPhotoPath = string.Empty;
-                    this.SelectedPhoto = null;
-                }
-
-                this.NotifyPropertyChanged();
-            }
-        }
-
-        public string SelectedPhotoPath
-        {
-            get => this.selectedPhotoPath;
-            set
-            {
-                if (this.selectedPhotoPath != value)
-                {
-                    this.selectedPhotoPath = value;
-                    this.NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public Photo SelectedPhoto
-        {
-            get => this.selectedPhoto;
-            set
-            {
-                this.selectedPhoto = value;
-                if (value != null)
-                {
-                    this.SelectedPhotoAction = (int)value.ProcessAction;
-                }
-                this.NotifyPropertyChanged();
-            }
-        }
-
-        public int SelectedPhotoAction
-        {
-            get
-            {
-                var value = this.selectedPhoto;
-                return value is null
-                    ? 0
-                    : (int)this.selectedPhoto.ProcessAction;
-            }
-            set
-            {
-                if (this.selectedPhoto != null)
-                {
-                    this.selectedPhoto.ProcessAction = (PhotoAction)value;
-                    this.SavePhoto();
-                    this.NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public List<TreeViewItemBase> TreeViewItems
-        {
-            get => this.treeViewItems;
-            set
-            {
-                this.treeViewItems = value;
-                this.NotifyPropertyChanged();
-            }
-        }
-
         public void SetLibrary(PhotoLibrary library)
         {
             this.StartProcessing();
@@ -157,31 +73,35 @@ namespace PhotoSyncManager.ViewModels
         public void ProcessLibrary(PhotoLibrary library)
         {
             var processor = new LibraryProcessor();
-            this.TreeViewItems = processor.Run(library);
+            var items = processor.Run(library);
+            this.PhotoRecords.Clear();
+            foreach (var item in items.OrderBy(x => x.RelativePath))
+            {
+                this.PhotoRecords.Add(item);
+            }
         }
 
         public void CloseLibrary()
         {
             this.SelectedLibrary = null;
-            this.TreeViewItems.Clear();
             AppState.Instance.Library = null;
         }
 
         private void StartProcessing() => this.IsProcessing = true;
         private void StopProcessing() => this.IsProcessing = false;
 
-        private void SavePhoto()
-        {
-            if (AppState.Instance.Library is null)
-            {
-                return;
-            }
+        //private void SavePhoto()
+        //{
+        //    if (AppState.Instance.Library is null)
+        //    {
+        //        return;
+        //    }
 
-            using var context = PhotoSyncContextFactory.Make(AppState.Instance.Library.DestinationFullPath);
-            var photo = context.Photos.Find(this.selectedPhoto.Id);
-            photo.ProcessAction = this.selectedPhoto.ProcessAction;
-            context.SaveChanges();
-        }
+        //    using var context = PhotoSyncContextFactory.Make(AppState.Instance.Library.DestinationFullPath);
+        //    var photo = context.Photos.Find(this.selectedPhoto.Id);
+        //    photo.ProcessAction = this.selectedPhoto.ProcessAction;
+        //    context.SaveChanges();
+        //}
 
         // This method is called by the Set accessor of each property.  
         // The CallerMemberName attribute that is applied to the optional propertyName  

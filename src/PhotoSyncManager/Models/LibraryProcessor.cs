@@ -12,20 +12,18 @@ namespace PhotoSyncManager.Models
 {
     public class LibraryProcessor
     {
-        public List<TreeViewItemBase> Run(PhotoLibrary library)
+        public IEnumerable<PhotoRecord> Run(PhotoLibrary library)
         {
-            var treeViewItemProvider = new TreeViewItemProvider();
-            var items = treeViewItemProvider.GetChildren(library.SourceFolder);
-            var fileItems = this.GetFiles(items);
-            var files = new ConcurrentBag<TreeViewFileItem>();
-            fileItems.ForEach(x => files.Add(x));
+            var files = new GetPhotoFilesQuery().Run(library.SourceFolder);
             var sourcePathLength = library.SourceFolder.Length;
+            var records = new ConcurrentBag<PhotoRecord>();
             var exceptions = new ConcurrentBag<Exception>();
+
             Parallel.ForEach(files, file =>
             {
                 try
                 {
-                    var relativePath = file.Path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
+                    var relativePath = file.FullName.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
                     using var context = PhotoSyncContextFactory.Make(library.DestinationFullPath);
                     if (context.Photos.Any(x => x.RelativePath == relativePath))
                     {
@@ -40,7 +38,7 @@ namespace PhotoSyncManager.Models
                             }
                             else
                             {
-                                file.Photo = photo;
+                                records.Add(this.MakeRecord(photo, file));
                             }
                         }
                     }
@@ -49,7 +47,7 @@ namespace PhotoSyncManager.Models
                         var photo = new Photo { RelativePath = relativePath };
                         context.Photos.Add(photo);
                         context.SaveChanges();
-                        file.Photo = photo;
+                        records.Add(this.MakeRecord(photo, file));
                     }
                 }
                 catch (Exception ex)
@@ -59,21 +57,15 @@ namespace PhotoSyncManager.Models
             });
 
             return exceptions.IsEmpty
-                ? items
+                ? records
                 : throw new AggregateException(exceptions);
         }
 
-        private List<TreeViewFileItem> GetFiles(IEnumerable<TreeViewItemBase> items)
-        {
-            var list = new List<TreeViewFileItem>();
-            foreach (var directory in items.OfType<TreeViewDirectoryItem>())
+        private PhotoRecord MakeRecord(Photo photo, FileInfo file)
+            => new PhotoRecord(photo)
             {
-                var directoryFiles = this.GetFiles(directory.Children);
-                list.AddRange(directoryFiles);
-            }
-
-            list.AddRange(items.OfType<TreeViewFileItem>());
-            return list;
-        }
+                FileName = file.Name,
+                FullPath = file.FullName
+            };
     }
 }

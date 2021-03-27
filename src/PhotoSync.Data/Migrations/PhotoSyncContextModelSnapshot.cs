@@ -16,6 +16,21 @@ namespace PhotoSync.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.3");
 
+            modelBuilder.Entity("PhotoSync.Data.Entities.ExcludeFolder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RelativePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExcludeFolders");
+                });
+
             modelBuilder.Entity("PhotoSync.Data.Entities.Photo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,16 +49,21 @@ namespace PhotoSync.Data.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("PhotoSync.Data.Entities.Setting", b =>
+            modelBuilder.Entity("PhotoSync.Data.Entities.Settings", b =>
                 {
-                    b.Property<string>("Key")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Value")
+                    b.Property<string>("DestinationFolder")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Key");
+                    b.Property<string>("SourceFolder")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Settings");
                 });

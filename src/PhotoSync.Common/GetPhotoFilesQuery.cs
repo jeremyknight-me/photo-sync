@@ -7,13 +7,24 @@ namespace PhotoSync.Common
 {
     public class GetPhotoFilesQuery
     {
-        public IEnumerable<FileInfo> Run(DirectoryInfo directoryInfo)
+        private readonly IEnumerable<string> extensions = new string[] { ".jpg", ".jpeg", ".png" };
+
+        public IEnumerable<FileInfo> Run(string directoryPath)
         {
-            var extensions = new string[] { ".jpg", ".jpeg", ".png" };
-            var files = directoryInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
+            if (!Directory.Exists(directoryPath))
+            {
+                return Enumerable.Empty<FileInfo>();
+            }
+
+            var directory = new DirectoryInfo(directoryPath);
+            var files = directory.GetFiles("*", SearchOption.AllDirectories);
             return files
                 .AsParallel()
-                .Where(x => extensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
+                .Where(x =>
+                    this.extensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase)
+                    && !x.FullName.Contains("\\#recycle\\")
+                );
+            ;
         }
     }
 }

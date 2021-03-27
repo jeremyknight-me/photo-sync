@@ -16,7 +16,7 @@ namespace PhotoSync.Data
         }
 
         public DbSet<Photo> Photos { get; set; }
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

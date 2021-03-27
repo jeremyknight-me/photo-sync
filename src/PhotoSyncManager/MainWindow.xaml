@@ -15,6 +15,11 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
+                <MenuItem Header="_New" Command="{Binding NewCommand}" CommandParameter="{Binding}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xF56E;" Style="{StaticResource IconText}" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="_Open" Command="{Binding OpenCommand}" CommandParameter="{Binding}">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xED25;" Style="{StaticResource IconText}" />
@@ -65,51 +70,26 @@
             </StatusBarItem>
         </StatusBar>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <TreeView Grid.Column="0" ItemsSource="{Binding TreeViewItems}" SelectedItemChanged="TreeView_SelectedItemChanged">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type models:TreeViewDirectoryItem}" ItemsSource="{Binding Children}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="&#xE8D5;" Style="{StaticResource IconText}" Foreground="#f8d876" />
-                            <TextBlock Grid.Column="0" Text="&#xE8B7;" Style="{StaticResource IconText}" />
-                            <TextBlock Grid.Column="1" Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" Margin="5, 0, 0, 0" />
-                        </Grid>
-                    </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type models:TreeViewFileItem}">
-                        <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=Path}">
-                            <TextBlock Text="&#xEB9F;" Style="{StaticResource IconText}" />
-                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" Margin="5, 0, 0, 0" />
-                        </StackPanel>
-                    </DataTemplate>
-                </TreeView.Resources>
-            </TreeView>
-
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"  />
-            <DockPanel Grid.Column="2" Background="#333">
-                <ToolBarTray DockPanel.Dock="Top">
-                    <ToolBar>
-                        <Label Content="Action:" />
-                        <ComboBox SelectedValue="{Binding SelectedPhotoAction, Mode=TwoWay}"
-                                  ItemsSource="{Binding PhotoActionOptions, Mode=OneTime}"
-                                  SelectedValuePath="Key"
-                                  DisplayMemberPath="Value" />
-                        <Separator />
-                        <Label Content="Photo Path:" />
-                        <Label Content="{Binding SelectedPhoto.RelativePath}" />
-                    </ToolBar>
-                </ToolBarTray>
-                <Image Source="{Binding SelectedPhotoPath}" />
-            </DockPanel>
-        </Grid>
+        <DataGrid ItemsSource="{Binding PhotoRecords}" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  CanUserDeleteRows="False" 
+                  CanUserReorderColumns="False" 
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="True" 
+                  CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Action" Binding="{Binding ProcessAction}" Width="Auto" />
+                <DataGridTemplateColumn Header="Preview" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding FullPath}" Height="100" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="File" Binding="{Binding FileName}" Width="Auto" />
+                <DataGridTextColumn Header="Path" Binding="{Binding RelativePath}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>

@@ -37,8 +37,9 @@ namespace PhotoSyncManager.Commands
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
                 {
                     using var context = PhotoSyncContextFactory.Make(path);
-                    var settings = context.Settings.ToArray();
+                    var settings = context.Settings.Single();
                     var library = PhotoLibraryConverter.Convert(settings);
+                    library.FileName = Path.GetFileName(path);
                     (parameter as MainViewModel).SetLibrary(library);
                 }
             }
