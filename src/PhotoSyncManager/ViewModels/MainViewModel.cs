@@ -84,6 +84,7 @@ namespace PhotoSyncManager.ViewModels
         public void CloseLibrary()
         {
             this.SelectedLibrary = null;
+            this.PhotoRecords.Clear();
             AppState.Instance.Library = null;
         }
 
