@@ -38,6 +38,7 @@
                         <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="E_xcluded Folders" Command="{Binding ExcludedFoldersCommand}" CommandParameter="{Binding}" />
                 <Separator />
                 <MenuItem Header="Show _New" IsCheckable="True"></MenuItem>
                 <Separator />

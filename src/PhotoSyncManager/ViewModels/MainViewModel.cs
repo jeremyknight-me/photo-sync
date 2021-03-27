@@ -25,6 +25,7 @@ namespace PhotoSyncManager.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand CloseLibraryCommand { get; private set; } = new CloseLibraryCommand();
+        public ICommand ExcludedFoldersCommand { get; private set; } = new ManageExcludedFoldersCommand();
         public ICommand ExitCommand { get; private set; } = new ShutdownCommand();
         public ICommand NewCommand { get; private set; } = new NewLibraryCommand();
         public ICommand OpenCommand { get; private set; } = new OpenLibraryCommand();
