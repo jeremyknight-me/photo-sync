@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace PhotoSync.Commands
+namespace PhotoSyncManager.Commands
 {
     internal class RelayCommand : ICommand
     {
