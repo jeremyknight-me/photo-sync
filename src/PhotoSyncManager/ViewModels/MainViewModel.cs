@@ -89,21 +89,21 @@ namespace PhotoSyncManager.ViewModels
             AppState.Instance.Library = null;
         }
 
+        public void SavePhoto(PhotoRecord record)
+        {
+            if (AppState.Instance.Library is null)
+            {
+                return;
+            }
+
+            using var context = PhotoSyncContextFactory.Make(AppState.Instance.Library.DestinationFullPath);
+            var photo = context.Photos.Find(record.Id);
+            photo.ProcessAction = record.ProcessAction;
+            context.SaveChanges();
+        }
+
         private void StartProcessing() => this.IsProcessing = true;
         private void StopProcessing() => this.IsProcessing = false;
-
-        //private void SavePhoto()
-        //{
-        //    if (AppState.Instance.Library is null)
-        //    {
-        //        return;
-        //    }
-
-        //    using var context = PhotoSyncContextFactory.Make(AppState.Instance.Library.DestinationFullPath);
-        //    var photo = context.Photos.Find(this.selectedPhoto.Id);
-        //    photo.ProcessAction = this.selectedPhoto.ProcessAction;
-        //    context.SaveChanges();
-        //}
 
         // This method is called by the Set accessor of each property.  
         // The CallerMemberName attribute that is applied to the optional propertyName  

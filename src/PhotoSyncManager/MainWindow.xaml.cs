@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using PhotoSyncManager.Models;
 using PhotoSyncManager.ViewModels;
 
 namespace PhotoSyncManager
@@ -9,6 +11,14 @@ namespace PhotoSyncManager
         {
             this.DataContext = new MainViewModel();
             this.InitializeComponent();
+        }
+
+        private void DataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                (this.DataContext as MainViewModel).SavePhoto(e.Row.Item as PhotoRecord);
+            }
         }
     }
 }
