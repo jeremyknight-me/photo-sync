@@ -5,9 +5,9 @@ namespace PhotoSyncManager.Windows
 {
     public partial class ExcludedFoldersWindow : Window
     {
-        public ExcludedFoldersWindow(MainViewModel main)
+        public ExcludedFoldersWindow(ExcludedFoldersViewModel viewModel)
         {
-            this.DataContext = new ExcludedFoldersViewModel(main);
+            this.DataContext = viewModel;
             this.InitializeComponent();
         }
     }

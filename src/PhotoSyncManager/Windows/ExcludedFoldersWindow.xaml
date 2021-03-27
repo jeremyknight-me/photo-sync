@@ -14,16 +14,21 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0 0 0 5">
-            <Button Content="Add" Margin="0 0 5 0"></Button>
-            <Button Content="Remove"></Button>
+            <Button Content="Add" Margin="0 0 5 0" CommandParameter="{Binding}" Command="{Binding AddCommand}"></Button>
+            <Button Content="Remove" CommandParameter="{Binding}" Command="{Binding RemoveCommand}"></Button>
         </StackPanel>
-        
-        <ListBox Grid.Row="1">
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Folders}" SelectedItem="{Binding SelectedFolder}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding RelativePath}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0 5 0 0">
-            <Button Content="Close" Margin="0 0 5 0"></Button>
-            <Button Content="Save"></Button>
+            <Button Content="Close" Margin="0 0 5 0" CommandParameter="{Binding}" Command="{Binding CloseCommand}"></Button>
+            <Button Content="Save" CommandParameter="{Binding}" Command="{Binding SaveCommand}"></Button>
         </StackPanel>
     </Grid>
 </Window>

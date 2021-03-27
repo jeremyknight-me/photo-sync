@@ -20,7 +20,8 @@ namespace PhotoSyncManager.Commands
             }
 
             var mainViewModel = parameter as MainViewModel;
-            var window = new ExcludedFoldersWindow(mainViewModel);
+            var excludedFolderViewModel = new ExcludedFoldersViewModel(mainViewModel);
+            var window = new ExcludedFoldersWindow(excludedFolderViewModel);
             window.Show();
         }
 
