@@ -8,14 +8,20 @@
         Title="Excluded Folders" Height="350" Width="300">
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="9*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="8*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0 0 0 5">
+            <Button Content="Add" Margin="0 0 5 0"></Button>
+            <Button Content="Remove"></Button>
+        </StackPanel>
+        
+        <ListBox Grid.Row="1">
         </ListBox>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0 5 0 0">
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0 5 0 0">
             <Button Content="Close" Margin="0 0 5 0"></Button>
             <Button Content="Save"></Button>
         </StackPanel>
