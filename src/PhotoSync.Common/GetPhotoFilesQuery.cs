@@ -9,21 +9,18 @@ namespace PhotoSync.Common
     {
         private readonly IEnumerable<string> extensions = new string[] { ".jpg", ".jpeg", ".png" };
 
-        public IEnumerable<FileInfo> Run(string directoryPath)
+        public IEnumerable<FileInfo> Run(PhotoLibrary library)
         {
-            if (!Directory.Exists(directoryPath))
+            if (!Directory.Exists(library.SourceFolder))
             {
                 return Enumerable.Empty<FileInfo>();
             }
 
-            var directory = new DirectoryInfo(directoryPath);
+            var directory = new DirectoryInfo(library.SourceFolder);
             var files = directory.GetFiles("*", SearchOption.AllDirectories);
             return files
                 .AsParallel()
-                .Where(x =>
-                    this.extensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase)
-                    && !x.FullName.Contains("\\#recycle\\")
-                );
+                .Where(x => this.extensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
             ;
         }
     }

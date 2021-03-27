@@ -15,6 +15,7 @@ namespace PhotoSync.Data
         {
         }
 
+        public DbSet<ExcludeFolder> ExcludeFolders { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Settings> Settings { get; set; }
 
