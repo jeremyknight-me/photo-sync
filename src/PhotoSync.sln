@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSync.Data", "PhotoSync.Data\PhotoSync.Data.csproj", "{7EADA7E7-6F8E-4FCB-8362-BD11D9F05F28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSyncManager", "PhotoSyncManager\PhotoSyncManager.csproj", "{F61721A6-9275-4FAF-96F4-F761FD3422F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSyncManager", "PhotoSyncManager\PhotoSyncManager.csproj", "{F61721A6-9275-4FAF-96F4-F761FD3422F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSync", "PhotoSync\PhotoSync.csproj", "{4680A2C1-BCD0-4750-BB48-B67CA9FB37E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoSync.Common", "PhotoSync.Common\PhotoSync.Common.csproj", "{2DCFBDA5-09A9-4AF7-B463-3DB0D683C78A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSync.Common", "PhotoSync.Common\PhotoSync.Common.csproj", "{2DCFBDA5-09A9-4AF7-B463-3DB0D683C78A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoSync", "PhotoSync\PhotoSync.csproj", "{E59FD803-9072-4DF4-BBD9-99901EB38DD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{F61721A6-9275-4FAF-96F4-F761FD3422F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F61721A6-9275-4FAF-96F4-F761FD3422F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F61721A6-9275-4FAF-96F4-F761FD3422F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4680A2C1-BCD0-4750-BB48-B67CA9FB37E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4680A2C1-BCD0-4750-BB48-B67CA9FB37E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4680A2C1-BCD0-4750-BB48-B67CA9FB37E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4680A2C1-BCD0-4750-BB48-B67CA9FB37E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DCFBDA5-09A9-4AF7-B463-3DB0D683C78A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DCFBDA5-09A9-4AF7-B463-3DB0D683C78A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DCFBDA5-09A9-4AF7-B463-3DB0D683C78A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DCFBDA5-09A9-4AF7-B463-3DB0D683C78A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E59FD803-9072-4DF4-BBD9-99901EB38DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E59FD803-9072-4DF4-BBD9-99901EB38DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E59FD803-9072-4DF4-BBD9-99901EB38DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E59FD803-9072-4DF4-BBD9-99901EB38DD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
