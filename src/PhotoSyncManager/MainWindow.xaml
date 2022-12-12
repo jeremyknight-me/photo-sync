@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoSyncManager"
-        xmlns:localdata="clr-namespace:PhotoSync.Data;assembly=PhotoSync.Data"
+        xmlns:localdata="clr-namespace:PhotoSync.Common;assembly=PhotoSync.Data"
         xmlns:models="clr-namespace:PhotoSyncManager.Models"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"

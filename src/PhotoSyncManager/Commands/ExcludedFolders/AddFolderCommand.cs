@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using PhotoSync.Data.Entities;
+using PhotoSync.Common.Entities;
 using PhotoSyncManager.Models;
 using PhotoSyncManager.ViewModels;
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PhotoSync.Common;
-using PhotoSync.Data;
+using PhotoSync.Common;
 using PhotoSyncManager.Commands;
 using PhotoSyncManager.Models;
 

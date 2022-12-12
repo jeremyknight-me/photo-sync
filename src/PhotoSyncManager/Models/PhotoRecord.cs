@@ -1,6 +1,6 @@
 ﻿using System;
-using PhotoSync.Data;
-using PhotoSync.Data.Entities;
+using PhotoSync.Common;
+using PhotoSync.Common.Entities;
 
 namespace PhotoSyncManager.Models
 {

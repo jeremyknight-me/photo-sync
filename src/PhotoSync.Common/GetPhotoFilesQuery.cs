@@ -11,12 +11,12 @@ namespace PhotoSync.Common
 
         public IEnumerable<FileInfo> Run(PhotoLibrary library)
         {
-            if (!Directory.Exists(library.SourceFolder))
+            if (!Directory.Exists(library.Settings.SourceFolder))
             {
                 return Enumerable.Empty<FileInfo>();
             }
 
-            var directory = new DirectoryInfo(library.SourceFolder);
+            var directory = new DirectoryInfo(library.Settings.SourceFolder);
             var files = directory.GetFiles("*", SearchOption.AllDirectories);
             return files
                 .AsParallel()

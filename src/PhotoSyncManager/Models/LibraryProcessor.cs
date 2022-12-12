@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using PhotoSync.Common;
-using PhotoSync.Data;
-using PhotoSync.Data.Entities;
+using PhotoSync.Common;
+using PhotoSync.Common.Entities;
 
 namespace PhotoSyncManager.Models
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using PhotoSync.Common;
-using PhotoSync.Data;
+using PhotoSync.Common;
 
 namespace PhotoSyncManager.Models
 {

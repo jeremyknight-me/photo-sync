@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using PhotoSync.Data;
+using PhotoSync.Common;
 using PhotoSyncManager.Models;
 using PhotoSyncManager.ViewModels;
 using PhotoSyncManager.Windows;
