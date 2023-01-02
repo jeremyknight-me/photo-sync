@@ -1,0 +1,11 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<h3>Welcome to PhotoSync</h3>
+
+<RadzenButton Text="Open Library" Click="@(args => NavigationManager.NavigateTo("/library/open"))" />
+<RadzenButton Text="Create Library" Click="@(args => NavigationManager.NavigateTo("/library/close"))" />
+
+@code {
+
+}
