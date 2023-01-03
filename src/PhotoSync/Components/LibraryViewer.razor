@@ -1,0 +1,56 @@
+﻿@page "/library"
+@using System.IO;
+@inject AppState appState;
+
+<h3>Library Viewer</h3>
+
+@if (this.appState.Library is null) {
+    <p>No library found.</p>
+} else {
+    <div>
+        <RadzenTree Data=@entries Expand=@LoadFiles Style="width: 100%; height: 300px">
+            <RadzenTreeLevel Text=@GetTextForNode Template=@FileOrFolderTemplate />
+        </RadzenTree>
+    </div>
+    <div> 
+        viewer
+    </div>
+}
+
+@code {
+    private IEnumerable<string> entries;
+
+    protected override void OnInitialized()
+    {
+        if (this.appState.Library is null)
+        {
+            return;
+        }
+
+        this.entries = Directory.GetDirectories(this.appState.Library.SourceFolder);
+    }
+
+    private void LoadFiles(TreeExpandEventArgs args)
+    {
+        var directory = args.Value as string;
+        args.Children.Data = Directory.GetDirectories(directory);
+        args.Children.Text = GetTextForNode;
+        args.Children.HasChildren = (path) => Directory.GetDirectories((string)path).Any();
+        args.Children.Template = FileOrFolderTemplate;
+    }
+
+    private string GetTextForNode(object data)
+    {
+        return Path.GetFileName((string)data);
+    }
+
+    RenderFragment<RadzenTreeItem> FileOrFolderTemplate = (context) => builder =>
+    {
+        string path = context.Value as string;
+        bool isDirectory = Directory.Exists(path);
+        builder.OpenComponent<RadzenIcon>(0);
+        builder.AddAttribute(1, nameof(RadzenIcon.Icon), "folder");
+        builder.CloseComponent();
+        builder.AddContent(3, context.Text);
+    };
+}

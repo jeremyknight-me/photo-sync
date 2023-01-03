@@ -1,7 +1,80 @@
 ﻿@page "/library/create"
+@using System.Windows.Forms;
+@using PhotoSync.Domain;
+@inject PhotoSync.Infrastructure.IPhotoLibraryRepository repository;
+@inject AppState appState;
+@inject NavigationManager navigationManager;
 
-<h3>CreateLibrary</h3>
+<h3>Create New Library</h3>
+
+<div class="mb-3">
+    <label for="destinationFolder" class="form-label">Destination Folder</label>
+    <div class="input-group">
+        <input id="destinationFolder" type="text" class="form-control" placeholder="Select destination folder" readonly value="@destination">
+        <button class="btn btn-secondary" type="button" @onclick="SelectDestinationFolder">Select</button>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="sourceFolder" class="form-label">Source Folder</label>
+    <div class="input-group">
+        <input id="sourceFolder" type="text" class="form-control" placeholder="Select source folder" readonly value="@source">
+        <button class="btn btn-secondary" type="button" @onclick="SelectSourceFolder">Select</button>
+    </div>
+</div>
+
+<button class="btn btn-primary" type="button" @onclick="Create" disabled="@creating">
+    <i class="bi bi-save"></i> Create
+</button>
+<a href="/" class="btn btn-primary">
+    <i class="bi bi-x-lg"></i> Cancel
+</a>
+@if (creating)
+{
+    <span>Saving...</span>
+}
 
 @code {
+    private string destination = string.Empty;
+    private string source = string.Empty;
+    private bool creating = false;
 
-}
+    private void Create()
+    {
+        this.creating = true;
+        var library = PhotoLibrary.Create(this.source, this.destination);
+        this.repository.Save(library);
+        this.appState.Library = library;
+        this.navigationManager.NavigateTo("/library");
+    }
+
+    private void SelectDestinationFolder()
+    {
+        this.destination = GetFolder();
+    }
+
+    private void SelectSourceFolder()
+    {
+        this.source = GetFolder();
+    }
+
+    private string GetFolder()
+    {
+        var dialog = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = false,
+                RootFolder = Environment.SpecialFolder.MyPictures
+            };
+        var result = dialog.ShowDialog();
+        if (result == DialogResult.OK)
+        {
+            var path = dialog.SelectedPath;
+            if (!string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+        }
+
+        return string.Empty;
+    }
+ }

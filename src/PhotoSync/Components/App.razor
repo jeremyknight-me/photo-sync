@@ -3,8 +3,14 @@
 
 <h3>Welcome to PhotoSync</h3>
 
-<RadzenButton Text="Open Library" Click="@(args => NavigationManager.NavigateTo("/library/open"))" />
-<RadzenButton Text="Create Library" Click="@(args => NavigationManager.NavigateTo("/library/close"))" />
+<a href="/library/open" class="btn btn-primary btn-lg">
+    <i class="bi bi-folder2-open"></i> Open Library
+</a>
+
+<a href="/library/create" class="btn btn-primary btn-lg">
+    <i class="bi bi-folder-plus"></i> Create Library
+</a>
+
 
 @code {
 

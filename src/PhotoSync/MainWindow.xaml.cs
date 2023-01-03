@@ -1,12 +1,9 @@
 ﻿using System.Windows;
-using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.Extensions.DependencyInjection;
+using PhotoSync.Infrastructure;
 
 namespace PhotoSync;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     public MainWindow()
@@ -18,6 +15,14 @@ public partial class MainWindow : Window
 #if DEBUG
         serviceCollection.AddBlazorWebViewDeveloperTools();
 #endif
+        this.SetupDependencies(serviceCollection);
         this.Resources.Add("services", serviceCollection.BuildServiceProvider());
+    }
+
+    private void SetupDependencies(ServiceCollection services)
+    {
+        services.AddSingleton<AppState>();
+        services.AddTransient<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
+        //services.AddTransient<IPhotoLibraryRepository, CompressedPhotoLibraryRepository>();
     }
 }
