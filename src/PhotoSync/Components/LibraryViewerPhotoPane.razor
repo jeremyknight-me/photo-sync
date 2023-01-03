@@ -4,7 +4,7 @@
 @using System.Web;
 @inject AppState appState;
 
-@if (this.photos is null || !this.photos.Any())
+@if (this.photos is null || (!this.photos.Any() && !this.loading))
 {
     <div>No photos found.</div>
 } 
@@ -22,8 +22,9 @@ else
 @code {
     private string folderPath = string.Empty;
     private bool shouldRender;
+    private bool loading = true;
     private IReadOnlyList<Photo> photos;
-    //file:////atlas/photo/vehicles/1996%20Toyota%20Celica/100_0203.JPG
+
     [Parameter]
     public string FolderPath { get; set; } = string.Empty;
 
@@ -32,32 +33,38 @@ else
         base.OnInitialized();
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         this.shouldRender = this.folderPath != this.FolderPath;
         this.folderPath = this.FolderPath;
-        this.LoadPhotos();
-        base.OnParametersSet();
+        await this.LoadPhotos();
     }
 
     protected override bool ShouldRender() => this.shouldRender;
 
-    private void LoadPhotos()
+    private async Task LoadPhotos()
     {
         if (this.appState.Library is null)
         {
             return;
         }
 
+        await this.appState.ShowLoadingModal();
         var sourceRelativePath = this.appState.Library.GetPathRelativeToSource(this.FolderPath);
         this.photos = this.appState.Library.Collection.Photos.Where(x => x.RelativeFolder == sourceRelativePath).ToList();
+        await this.appState.HideLoadingModal();
     }
 
     private string MakePhotoUrl(string relativePath)
     {
-        var url = Path.Combine(this.appState.Library.SourceFolder, relativePath)
-            .Replace("\\", "/")
-            .TrimStart('/');
-        return "file://" + url;
+        if (this.appState.Library is null)
+        {
+            return string.Empty;
+        }
+
+        var path = Path.Combine(this.appState.Library.SourceFolder, relativePath);
+        var imageBytes = System.IO.File.ReadAllBytes(path);
+        var base64Image = Convert.ToBase64String(imageBytes);
+        return $"data:image/png;base64,{base64Image}";
     }
 }

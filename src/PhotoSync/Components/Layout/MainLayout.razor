@@ -1,6 +1,29 @@
 ﻿@inherits LayoutComponentBase
+@inject AppState appState
+@inject IJSRuntime js
 
 <div class="container-fluid">
     @Body
 </div>
 
+<LoadingIndicator @ref="loadingModal" />
+
+@code {
+    private LoadingIndicator loadingModal;
+
+    protected override void OnInitialized()
+    {
+        this.appState.HideLoadingModal = HideBusyDialog;
+        this.appState.ShowLoadingModal = ShowBusyDialog;
+    }
+
+    private async Task ShowBusyDialog()
+    {
+        await this.loadingModal.Show();
+    }
+
+    private async Task HideBusyDialog()
+    {
+        await this.loadingModal.Hide();
+    }
+}

@@ -3,6 +3,13 @@
   "defaultProvider": "jsdelivr",
   "libraries": [
     {
+      "library": "bootstrap@5.2.3",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/js/bootstrap.bundle.min.js"
+      ]
+    },
+    {
       "library": "bootstrap-icons@1.10.3",
       "destination": "wwwroot/lib/bootstrap-icons",
       "files": [

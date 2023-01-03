@@ -1,0 +1,40 @@
+﻿@using PhotoSync.Extensions;
+@inject IJSRuntime js;
+
+<div class="modal fade" id="@loadingModalId" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center align-self-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="text-primary fw-bold mt-2"><em>Loading...</em></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private const string loadingModalId = "loading-modal";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await this.js.BootstrapModalInit(loadingModalId, staticBackdrop: true, keyboard: false);
+        }
+    }
+
+    public async Task Hide()
+    {
+        await this.js.BootstrapModalClose(loadingModalId);
+    }
+
+    public async Task Show()
+    {
+        await this.js.BootstrapModalOpen(loadingModalId);
+        await Task.Delay(500);
+    }
+}
