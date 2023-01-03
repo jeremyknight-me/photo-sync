@@ -1,7 +1,9 @@
 ﻿@page "/library/create"
 @using System.Windows.Forms;
 @using PhotoSync.Domain;
-@inject PhotoSync.Infrastructure.IPhotoLibraryRepository repository;
+@using PhotoSync.Infrastructure;
+@inject IPhotoLibraryRepository repository;
+@inject IRefreshLibraryCommand refreshLibraryCommand;
 @inject AppState appState;
 @inject NavigationManager navigationManager;
 
@@ -44,6 +46,7 @@
         this.creating = true;
         var library = PhotoLibrary.Create(this.source, this.destination);
         this.repository.Save(library);
+        this.refreshLibraryCommand.Run(library);
         this.appState.Library = library;
         this.navigationManager.NavigateTo("/library");
     }

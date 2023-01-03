@@ -1,13 +1,23 @@
 ﻿using System.IO;
 using System.Text.Json.Serialization;
-using PhotoSync.Domain.Enums;
 
 namespace PhotoSync.Domain;
 
 internal sealed class Photo
 {
-    public string RelativePath { get; private set; } = null!;
+    public required string RelativePath { get; init; }
+    [JsonIgnore] public string RelativeFolder => Path.GetDirectoryName(this.RelativePath);
     public PhotoAction ProcessAction { get; private set; } = PhotoAction.New;
     [JsonIgnore] public string Name => Path.GetFileName(this.RelativePath);
-    public long SizeBytes { get; private set; }
+    [JsonInclude] public long SizeBytes { get; private set; }
+
+    public void UpdateAction(PhotoAction action) => this.ProcessAction = action;
+    public void UpdateSizeBytes(long size) => this.SizeBytes = size;
+
+    public static Photo Create(string relativePath, long sizeBytes)
+        => new Photo()
+        {
+            RelativePath = relativePath,
+            SizeBytes = sizeBytes
+        };
 }

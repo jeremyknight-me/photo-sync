@@ -1,0 +1,59 @@
+﻿@using System.IO;
+@inject AppState appState;
+
+<RadzenTree Data=@entries Expand=@LoadFiles Style="width: 100%;" @bind-Value="@selectedNode" Change="@OnFolderChanged">
+    <RadzenTreeLevel Text=@GetTextForNode Template=@FileOrFolderTemplate />
+</RadzenTree>
+
+@code {
+    private IEnumerable<string> entries;
+    private object selectedNode;
+
+    [Parameter]
+    public EventCallback<string> OnFolderSelected { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (this.appState.Library is null)
+        {
+            return;
+        }
+
+        this.entries = Directory.GetDirectories(this.appState.Library.SourceFolder);
+    }
+
+    private void LoadFiles(TreeExpandEventArgs args)
+    {
+        var directory = args.Value as string;
+        args.Children.Data = Directory.GetDirectories(directory);
+        args.Children.Text = GetTextForNode;
+        args.Children.HasChildren = (path) => Directory.GetDirectories((string)path).Any();
+        args.Children.Template = FileOrFolderTemplate;
+    }
+
+    private string GetTextForNode(object data)
+    {
+        return Path.GetFileName((string)data);
+    }
+
+    private RenderFragment<RadzenTreeItem> FileOrFolderTemplate = (context) => builder =>
+    {
+        string path = context.Value as string;
+        bool isDirectory = Directory.Exists(path);
+        builder.OpenComponent<RadzenIcon>(0);
+        builder.AddAttribute(1, nameof(RadzenIcon.Icon), "folder");
+        builder.CloseComponent();
+        builder.AddContent(3, context.Text);
+    };
+
+    private async Task OnFolderChanged()
+    {
+        if (this.selectedNode is not string)
+        {
+            return;
+        }
+
+        var selected = this.selectedNode?.ToString() ?? string.Empty;
+        await this.OnFolderSelected.InvokeAsync(selected);
+    }
+}

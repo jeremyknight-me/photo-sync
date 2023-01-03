@@ -1,0 +1,16 @@
+﻿div#viewer-controls {
+    border-bottom: solid 1px #ccc;
+    height: 50px;
+    padding-top: 9px;
+    overflow: hidden;
+}
+
+div#viewer-tree-pane,
+div#viewer-photo-pane {
+    height: calc(100vh - 50px);
+    overflow: auto;
+}
+
+div#viewer-tree-pane {
+    border-right: solid 1px #ccc;
+}

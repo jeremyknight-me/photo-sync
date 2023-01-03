@@ -1,7 +1,9 @@
 ﻿@page "/library/open"
 @using System.Windows.Forms;
 @using System.IO;
-@inject PhotoSync.Infrastructure.IPhotoLibraryRepository repository;
+@using PhotoSync.Infrastructure;
+@inject IPhotoLibraryRepository repository;
+@inject IRefreshLibraryCommand refreshLibraryCommand;
 @inject AppState appState;
 @inject NavigationManager navigationManager;
 
@@ -32,6 +34,8 @@
             if (!string.IsNullOrEmpty(path) && File.Exists(path))
             {
                 var library = this.repository.Open(path);
+                this.refreshLibraryCommand.Run(library);
+                this.repository.Save(library);
                 this.appState.Library = library;
                 this.navigationManager.NavigateTo("/library");
             }

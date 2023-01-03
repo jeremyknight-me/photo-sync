@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace PhotoSync.Domain.Enums;
+namespace PhotoSync.Domain;
 
 public enum PhotoAction
 {

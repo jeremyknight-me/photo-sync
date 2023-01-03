@@ -49,6 +49,30 @@ internal sealed class PhotoLibrary
         this.excludedFolders.Add(trimmed);
     }
 
+    public string GetPathRelativeToSource(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return string.Empty;
+        }
+
+        var sourcePathLength = this.SourceFolder.Length;
+        return path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
+    }
+
+    public bool IsInExcludedFolder(string relativePath)
+    {
+        foreach (var folder in this.ExcludedFolders)
+        {
+            if (relativePath.StartsWith(folder))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void RemoveExcludedPath(string path)
     {
         var trimmed = path.Trim();

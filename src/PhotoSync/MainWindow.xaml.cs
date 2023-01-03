@@ -22,7 +22,9 @@ public partial class MainWindow : Window
     private void SetupDependencies(ServiceCollection services)
     {
         services.AddSingleton<AppState>();
-        services.AddTransient<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
-        //services.AddTransient<IPhotoLibraryRepository, CompressedPhotoLibraryRepository>();
+        services.AddSingleton<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
+        //services.AddSingleton<IPhotoLibraryRepository, CompressedPhotoLibraryRepository>();
+        services.AddSingleton<IGetPhotosQuery, GetPhotosQuery>();
+        services.AddSingleton<IRefreshLibraryCommand, RefreshLibraryCommand>();
     }
 }

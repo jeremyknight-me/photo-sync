@@ -1,0 +1,63 @@
+﻿@using PhotoSync.Domain;
+@using PhotoSync.Infrastructure;
+@using System.IO;
+@using System.Web;
+@inject AppState appState;
+
+@if (this.photos is null || !this.photos.Any())
+{
+    <div>No photos found.</div>
+} 
+else
+{
+    foreach (var photo in this.photos)
+    {
+        <div>
+            <img style="max-height: 100px; max-width: 100px" src="@this.MakePhotoUrl(photo.RelativePath)" />
+            @photo.Name
+        </div>
+    }    
+}
+
+@code {
+    private string folderPath = string.Empty;
+    private bool shouldRender;
+    private IReadOnlyList<Photo> photos;
+    //file:////atlas/photo/vehicles/1996%20Toyota%20Celica/100_0203.JPG
+    [Parameter]
+    public string FolderPath { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        this.shouldRender = this.folderPath != this.FolderPath;
+        this.folderPath = this.FolderPath;
+        this.LoadPhotos();
+        base.OnParametersSet();
+    }
+
+    protected override bool ShouldRender() => this.shouldRender;
+
+    private void LoadPhotos()
+    {
+        if (this.appState.Library is null)
+        {
+            return;
+        }
+
+        var sourceRelativePath = this.appState.Library.GetPathRelativeToSource(this.FolderPath);
+        this.photos = this.appState.Library.Collection.Photos.Where(x => x.RelativeFolder == sourceRelativePath).ToList();
+    }
+
+    private string MakePhotoUrl(string relativePath)
+    {
+        var url = Path.Combine(this.appState.Library.SourceFolder, relativePath)
+            .Replace("\\", "/")
+            .TrimStart('/');
+        return "file://" + url;
+    }
+}
