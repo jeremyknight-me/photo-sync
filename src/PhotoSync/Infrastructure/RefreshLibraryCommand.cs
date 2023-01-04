@@ -22,6 +22,12 @@ internal sealed class RefreshLibraryCommand : IRefreshLibraryCommand
 
     public void Run(PhotoLibrary library)
     {
+        library.RemoveExcludedPhotos();
+        this.UpdatePhotos(library);
+    }
+
+    private void UpdatePhotos(PhotoLibrary library)
+    {
         var files = this.photosQuery.Run(library);
         var exceptions = new ConcurrentBag<Exception>();
         var newPhotos = new ConcurrentBag<Photo>();

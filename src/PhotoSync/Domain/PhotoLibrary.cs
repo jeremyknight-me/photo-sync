@@ -95,4 +95,6 @@ internal sealed class PhotoLibrary
             this.AddExcludedPath(path);
         }
     }
+
+    public void RemoveExcludedPhotos() => this.Collection.RemoveWithRoots(this.excludedFolders);
 }

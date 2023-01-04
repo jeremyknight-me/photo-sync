@@ -29,4 +29,23 @@ internal sealed class PhotoCollection
             this.photos.Add(photo);
         }
     }
+
+    public void RemoveWithRoots(IEnumerable<string> roots)
+    {
+        Stack<int> indexes = new();
+        for (var i = 0; i < this.photos.Count; i++)
+        {
+            var photo = this.photos[i];
+            if (roots.Any(x => photo.RelativePath.StartsWith(x)))
+            {
+                indexes.Push(i);
+            }
+        }
+
+        while (indexes.Count > 0)
+        {
+            var index = indexes.Pop();
+            this.photos.RemoveAt(index);
+        }
+    }
 }
