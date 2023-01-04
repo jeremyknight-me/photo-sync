@@ -11,6 +11,13 @@ internal sealed class Photo
     [JsonIgnore] public string Name => Path.GetFileName(this.RelativePath);
     [JsonInclude] public long SizeBytes { get; private set; }
 
+    [JsonIgnore]
+    public int BindAction
+    {
+        get => (int)this.ProcessAction;
+        set => this.ProcessAction = (PhotoAction)value;
+    }
+
     public void UpdateAction(PhotoAction action) => this.ProcessAction = action;
     public void UpdateSizeBytes(long size) => this.SizeBytes = size;
 

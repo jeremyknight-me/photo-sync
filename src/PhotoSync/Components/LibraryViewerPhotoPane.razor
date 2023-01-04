@@ -15,13 +15,34 @@ else if(this.photos is null || (!this.photos.Any() && !this.loading))
 } 
 else
 {
-    foreach (var photo in this.photos)
-    {
-        <div>
-            <img style="max-height: 100px; max-width: 100px" src="@this.MakePhotoUrl(photo.RelativePath)" />
-            @photo.Name
-        </div>
-    }    
+    <table class="table table-striped">
+        <thead>
+           <tr>
+               <th>Photo</th>
+               <th>Details</th>
+           </tr>
+        </thead>
+        <tbody>
+            @foreach (var photo in this.photos)
+            {
+                <tr>
+                    <td><img style="max-height: 200px; max-width: 200px" src="@this.MakePhotoUrl(photo.RelativePath)" /></td>
+                    <td>
+                        <div>@photo.Name</div>
+                        <div>
+                            <select @bind="photo.BindAction">
+                                <option value="@((int)PhotoAction.New)">@(PhotoAction.New.ToString())</option>
+                                <option value="@((int)PhotoAction.Sync)">@(PhotoAction.Sync.ToString())</option>
+                                <option value="@((int)PhotoAction.Ignore)">@(PhotoAction.Ignore.ToString())</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+  
 }
 
 @code {
