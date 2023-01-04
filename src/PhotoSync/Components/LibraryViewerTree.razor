@@ -1,4 +1,5 @@
 ﻿@using System.IO;
+@using PhotoSync.ViewModels;
 @inject AppState appState;
 
 <RadzenTree Data=@entries Expand=@LoadFiles Style="width: 100%;" @bind-Value="@selectedNode" Change="@OnFolderChanged">
@@ -10,7 +11,7 @@
     private object selectedNode;
 
     [Parameter]
-    public EventCallback<string> OnFolderSelected { get; set; }
+    public EventCallback<SelectedFolderViewModel> OnFolderSelected { get; set; }
 
     protected override void OnInitialized()
     {
@@ -54,6 +55,23 @@
         }
 
         var selected = this.selectedNode?.ToString() ?? string.Empty;
-        await this.OnFolderSelected.InvokeAsync(selected);
+        var viewModel = this.MakeFolderViewModel(selected);
+        await this.OnFolderSelected.InvokeAsync(viewModel);
+    }
+
+    private SelectedFolderViewModel MakeFolderViewModel(string selected)
+    {
+        if (string.IsNullOrWhiteSpace(selected))
+        {
+            return new SelectedFolderViewModel();
+        }
+
+        var model = new SelectedFolderViewModel
+            {
+                SourcePath = selected,
+                RelativePath = this.appState.Library.GetPathRelativeToSource(selected)
+            };
+        model.IsExcluded = this.appState.Library.ExcludedFolders.Contains(model.RelativePath);
+        return model;
     }
 }

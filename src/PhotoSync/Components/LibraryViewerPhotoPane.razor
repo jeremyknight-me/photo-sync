@@ -2,9 +2,14 @@
 @using PhotoSync.Infrastructure;
 @using System.IO;
 @using System.Web;
+@using PhotoSync.ViewModels;
 @inject AppState appState;
 
-@if (this.photos is null || (!this.photos.Any() && !this.loading))
+@if (this.SelectedFolder.IsExcluded)
+{
+    <div>Folder '@this.SelectedFolder.SourcePath' excluded.</div>
+}
+else if(this.photos is null || (!this.photos.Any() && !this.loading))
 {
     <div>No photos found.</div>
 } 
@@ -20,13 +25,13 @@ else
 }
 
 @code {
-    private string folderPath = string.Empty;
+    private SelectedFolderViewModel folder = new();
     private bool shouldRender;
     private bool loading = true;
     private IReadOnlyList<Photo> photos;
 
     [Parameter]
-    public string FolderPath { get; set; } = string.Empty;
+    public SelectedFolderViewModel SelectedFolder { get; set; }
 
     protected override void OnInitialized()
     {
@@ -35,23 +40,25 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        this.shouldRender = this.folderPath != this.FolderPath;
-        this.folderPath = this.FolderPath;
-        await this.LoadPhotos();
+        this.shouldRender = this.folder.SourcePath != this.SelectedFolder.SourcePath;
+        this.folder = this.SelectedFolder;
+        if (this.shouldRender)
+        {
+            await this.LoadPhotos();
+        }
     }
 
     protected override bool ShouldRender() => this.shouldRender;
 
     private async Task LoadPhotos()
     {
-        if (this.appState.Library is null)
+        if (this.appState.Library is null || this.SelectedFolder.IsExcluded)
         {
             return;
         }
 
         await this.appState.ShowLoadingModal();
-        var sourceRelativePath = this.appState.Library.GetPathRelativeToSource(this.FolderPath);
-        this.photos = this.appState.Library.Collection.Photos.Where(x => x.RelativeFolder == sourceRelativePath).ToList();
+        this.photos = this.appState.Library.Collection.Photos.Where(x => x.RelativeFolder == this.SelectedFolder.RelativePath).ToList();
         await this.appState.HideLoadingModal();
     }
 

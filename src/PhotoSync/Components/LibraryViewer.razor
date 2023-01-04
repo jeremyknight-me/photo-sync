@@ -1,30 +1,57 @@
 ﻿@page "/library"
 @using System.IO;
+@using PhotoSync.Domain;
+@using PhotoSync.Infrastructure;
+@using PhotoSync.ViewModels;
 @inject AppState appState;
+@inject IPhotoLibraryRepository photoLibraryRepository;
+@inject IRefreshLibraryCommand refreshLibraryCommand;
 
 @if (this.appState.Library is null) {
     <p>No library found.</p>
 } else {
     <div class="row" style="height: 100vh;">
         <div class="col-12" id="viewer-controls">
-            <button class="btn btn-secondary btn-sm">Refresh Library</button>
-            <button class="btn btn-secondary btn-sm">Save Library</button>
-            <button class="btn btn-secondary btn-sm">Show Excluded</button>
-            <button class="btn btn-secondary btn-sm">Hide Excluded</button>
-            <button class="btn btn-secondary btn-sm">Sync</button>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group me-2" role="group">
+                    <button class="btn btn-secondary btn-sm" @onclick="this.Refresh">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                    </button>
+                    <button class="btn btn-secondary btn-sm" @onclick="this.Save">
+                        <i class="bi bi-save"></i> Save
+                    </button>
+                    <button class="btn btn-secondary btn-sm" disabled="@true">
+                        <i class="bi bi-arrow-repeat"></i> Sync
+                    </button>
+                </div>
+                @if (this.isFolderSelected)
+                {
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-secondary btn-sm" @onclick="this.ToggleExcludeFolder">
+                            <i class="bi @(this.selectedFolder.IsExcluded ? "bi-toggle-on" : "bi-toggle-off")"></i>
+                            Exclude Folder
+                        </button>
+                        <button class="btn btn-secondary btn-sm" disabled="@true">
+                            <i class="bi bi-eye-slash"></i>
+                            <i class="bi bi-eye"></i>
+                            Show Excluded
+                        </button>
+                    </div>
+                }
+            </div>
         </div>
         <div class="col-4" id="viewer-tree-pane">
             <LibraryViewerTree OnFolderSelected="FolderSelected" />
         </div>
         <div class="col-8" id="viewer-photo-pane">
-            <LibraryViewerPhotoPane FolderPath="@selectedFolder" />
+            <LibraryViewerPhotoPane SelectedFolder="@selectedFolder" />
         </div>
     </div>
 }
 
 @code {
-
-    private string selectedFolder = string.Empty;
+    private SelectedFolderViewModel selectedFolder = new();
+    private bool isFolderSelected;
 
     protected override void OnInitialized()
     {
@@ -34,8 +61,47 @@
         }
     }
 
-    private void FolderSelected(string folder)
+    private void FolderSelected(SelectedFolderViewModel folder)
     {
         this.selectedFolder = folder;
+        this.isFolderSelected = !string.IsNullOrWhiteSpace(folder.SourcePath);
+    }
+
+    private async Task Refresh()
+    {
+        if (this.appState.Library is null)
+        {
+            return;
+        }
+
+        await this.appState.ShowLoadingModal();
+        this.refreshLibraryCommand.Run(this.appState.Library);
+        this.photoLibraryRepository.Save(this.appState.Library);
+        await this.appState.HideLoadingModal();
+    }
+
+    private async Task Save()
+    {
+        if (this.appState.Library is null)
+        {
+            return;
+        }
+
+        await this.appState.ShowLoadingModal();
+        this.photoLibraryRepository.Save(this.appState.Library);
+        await this.appState.HideLoadingModal();
+    }
+
+    private async Task ToggleExcludeFolder()
+    {
+        if (this.appState.Library is null)
+        {
+            return;
+        }
+
+        await this.appState.ShowLoadingModal();
+        this.appState.Library.ToggleExcludedPath(this.selectedFolder.RelativePath);
+        this.selectedFolder.ToggleExcluded();
+        await this.appState.HideLoadingModal();
     }
 }

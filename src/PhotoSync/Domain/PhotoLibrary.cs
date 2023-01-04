@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace PhotoSync.Domain;
@@ -19,6 +20,7 @@ internal sealed class PhotoLibrary
     [JsonInclude]
     public string SourceFolder { get; private set; }
 
+    [JsonInclude]
     public IEnumerable<string> ExcludedFolders
     {
         get => this.excludedFolders;
@@ -79,6 +81,18 @@ internal sealed class PhotoLibrary
         if (this.excludedFolders.Contains(trimmed))
         {
             this.excludedFolders.Remove(trimmed);
+        }
+    }
+
+    public void ToggleExcludedPath(string path)
+    {
+        if (this.excludedFolders.Contains(path))
+        {
+            this.RemoveExcludedPath(path);
+        }
+        else
+        {
+            this.AddExcludedPath(path);
         }
     }
 }

@@ -1,13 +1,46 @@
 ﻿@page "/"
 @using PhotoSync.Extensions;
+@using System.Windows.Forms;
+@using System.IO;
+@using PhotoSync.Infrastructure;
+@inject IPhotoLibraryRepository repository;
+@inject IRefreshLibraryCommand refreshLibraryCommand;
+@inject AppState appState;
+@inject NavigationManager navigationManager;
 
 <h3>Welcome to PhotoSync</h3>
 
-<a href="/library/open" class="btn btn-primary btn-lg">
+<button class="btn btn-primary btn-lg" type="button" @onclick="OpenFile">
     <i class="bi bi-folder2-open"></i> Open Library
-</a>
+</button>
 
 <a href="/library/create" class="btn btn-primary btn-lg">
     <i class="bi bi-folder-plus"></i> Create Library
 </a>
 
+@code {
+    private void OpenFile()
+    {
+        var dialog = new OpenFileDialog()
+            {
+                Title = "Open Library",
+                Filter = "db files (*.db)|*.db|All Files (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                Multiselect = false
+            };
+
+        var result = dialog.ShowDialog();
+        if (result == DialogResult.OK)
+        {
+            var path = dialog.FileName;
+            if (!string.IsNullOrEmpty(path) && File.Exists(path))
+            {
+                var library = this.repository.Open(path);
+                this.refreshLibraryCommand.Run(library);
+                this.repository.Save(library);
+                this.appState.Library = library;
+                this.navigationManager.NavigateTo("/library");
+            }
+        }
+    }
+}
