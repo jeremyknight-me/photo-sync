@@ -11,20 +11,14 @@ public sealed class Photo : Entity<Guid>
     {
     }
 
-    public string RelativePath
-    {
-        get; private set;
-    }
+    public string RelativePath { get; private set; }
     public PhotoAction ProcessAction { get; private set; } = PhotoAction.New;
-    public long SizeBytes
-    {
-        get; private set;
-    }
+    public long SizeBytes { get; private set; }
 
     public string Name => Path.GetFileName(this.RelativePath);
     public string RelativeFolder => Path.GetDirectoryName(this.RelativePath);
 
-    public void UpdateAction(PhotoAction action) => this.ProcessAction = action;
+    public void UpdateProcessAction(PhotoAction action) => this.ProcessAction = action;
     public void UpdateSizeBytes(long size) => this.SizeBytes = size;
 
     public static Photo Create(string relativePath, long sizeBytes)
