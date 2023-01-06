@@ -1,4 +1,4 @@
-﻿namespace PhotoSync.Data;
+﻿namespace PhotoSync.Domain.Enums;
 
 public enum PhotoAction
 {
