@@ -34,6 +34,9 @@ namespace PhotoSync.Data.Sqlite.Migrations
 
                     b.HasIndex("PhotoLibraryId");
 
+                    b.HasIndex("RelativePath")
+                        .IsUnique();
+
                     b.ToTable("ExcludedFolders", (string)null);
                 });
 
@@ -59,6 +62,9 @@ namespace PhotoSync.Data.Sqlite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PhotoLibraryId");
+
+                    b.HasIndex("RelativePath")
+                        .IsUnique();
 
                     b.ToTable("Photos", (string)null);
                 });

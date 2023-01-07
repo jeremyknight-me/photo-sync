@@ -11,7 +11,7 @@ using PhotoSync.Data.Sqlite;
 namespace PhotoSync.Data.Sqlite.Migrations
 {
     [DbContext(typeof(PhotoSyncContext))]
-    [Migration("20230106204628_InitialCreate")]
+    [Migration("20230107030931_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,6 +36,9 @@ namespace PhotoSync.Data.Sqlite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PhotoLibraryId");
+
+                    b.HasIndex("RelativePath")
+                        .IsUnique();
 
                     b.ToTable("ExcludedFolders", (string)null);
                 });
@@ -62,6 +65,9 @@ namespace PhotoSync.Data.Sqlite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PhotoLibraryId");
+
+                    b.HasIndex("RelativePath")
+                        .IsUnique();
 
                     b.ToTable("Photos", (string)null);
                 });

@@ -31,7 +31,7 @@ namespace PhotoSync.Data.Sqlite.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     RelativePath = table.Column<string>(type: "TEXT", nullable: false),
-                    PhotoLibraryId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    PhotoLibraryId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace PhotoSync.Data.Sqlite.Migrations
                     RelativePath = table.Column<string>(type: "TEXT", nullable: false),
                     ProcessAction = table.Column<int>(type: "INTEGER", nullable: false),
                     SizeBytes = table.Column<long>(type: "INTEGER", nullable: false),
-                    PhotoLibraryId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    PhotoLibraryId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,9 +69,21 @@ namespace PhotoSync.Data.Sqlite.Migrations
                 column: "PhotoLibraryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExcludedFolders_RelativePath",
+                table: "ExcludedFolders",
+                column: "RelativePath",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photos_PhotoLibraryId",
                 table: "Photos",
                 column: "PhotoLibraryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_RelativePath",
+                table: "Photos",
+                column: "RelativePath",
+                unique: true);
         }
 
         /// <inheritdoc />

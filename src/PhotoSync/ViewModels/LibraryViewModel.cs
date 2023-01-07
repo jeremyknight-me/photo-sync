@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PhotoSync.Domain;
 
 namespace PhotoSync.ViewModels;
 
 public partial class LibraryViewModel
 {
+    public PhotoLibrary Library { get; private set; }
+
+    public void SetLibrary(PhotoLibrary library) => this.Library = library;
 }

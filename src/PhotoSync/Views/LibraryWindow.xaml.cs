@@ -10,4 +10,6 @@ public partial class LibraryWindow : Window
         this.DataContext = viewModel;
         this.InitializeComponent();
     }
+
+    public LibraryViewModel ViewModel => this.DataContext as LibraryViewModel;
 }

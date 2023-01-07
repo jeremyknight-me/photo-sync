@@ -13,6 +13,8 @@ internal sealed class PhotoLibraryConfig : IEntityTypeConfiguration<PhotoLibrary
 
         builder.Ignore(x => x.FilePath);
 
+        builder.Property(x => x.SourceFolder).IsRequired();
+
         builder.HasMany(x => x.ExcludedFolders).WithOne();
         builder.HasMany(x => x.Photos).WithOne();
     }

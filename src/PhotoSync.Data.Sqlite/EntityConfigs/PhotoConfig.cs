@@ -13,5 +13,7 @@ internal sealed class PhotoConfig : IEntityTypeConfiguration<Photo>
         builder.Property(x => x.ProcessAction).IsRequired();
         builder.Property(x => x.RelativePath).IsRequired();
         builder.Property(x => x.SizeBytes).IsRequired();
+
+        builder.HasIndex(x => x.RelativePath).IsUnique();
     }
 }

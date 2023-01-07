@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PhotoSync.Data.Sqlite\PhotoSync.Data.Sqlite.csproj" />
       <ProjectReference Include="..\PhotoSync.Domain\PhotoSync.Domain.csproj" />
     </ItemGroup>
 

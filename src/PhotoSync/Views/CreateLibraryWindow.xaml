@@ -48,6 +48,7 @@
             <Button Content="Select"
                     Command="{Binding GetSourceFolderPathCommand}" />
             <TextBox Grid.Column="1" 
+                     IsReadOnly="True"
                      Text="{Binding SourceFolder}"
                      HorizontalAlignment="Stretch" />
         </Grid>

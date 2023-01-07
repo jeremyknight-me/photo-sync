@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using PhotoSync.Data.Sqlite;
+using PhotoSync.Data.Sqlite.Repositories;
+using PhotoSync.Domain.Contracts;
+using PhotoSync.Domain.Operations;
 using PhotoSync.ViewModels;
 using PhotoSync.Views;
 
@@ -29,12 +33,19 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<LoadingWindow>();
+        services.AddTransient<IGetPhotosOperation, GetPhotosOperation>();
+        services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
+        services.AddTransient<IPhotoLibraryRepository, SqlitePhotoLibraryRepository>();
+
+        services.AddSingleton<PhotoSyncContextFactory>();
 
         services.AddTransient<MainViewModel>();
         services.AddTransient<MainWindow>();
 
         services.AddTransient<CreateLibraryViewModel>();
         services.AddTransient<CreateLibraryWindow>();
+
+        services.AddTransient<LibraryViewModel>();
+        services.AddTransient<LibraryWindow>();
     }
 }
