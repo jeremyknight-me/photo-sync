@@ -5,11 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoSync"
         mc:Ignorable="d"
+        Background="{StaticResource DarkGrayBrush}"
         Title="PhotoSync" Height="450" Width="800">
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-        <Button>Open Library</Button>
-        <Button>Create Library</Button>
+        <Button Command="{Binding OpenLibraryCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+            <StackPanel>
+                <TextBlock Text="&#xED25;" 
+                           Style="{StaticResource IconText}" 
+                           HorizontalAlignment="Center" />
+                <TextBlock Text=" Open Library" />
+            </StackPanel>
+        </Button>
+        <Button Command="{Binding CreateLibraryCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+            <StackPanel>
+                <TextBlock Text="&#xF56E;" 
+                           Style="{StaticResource IconText}" 
+                           HorizontalAlignment="Center" />
+                <TextBlock Text="Create Library" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </Window>

@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using PhotoSync.ViewModels;
+using PhotoSync.Views;
 
 namespace PhotoSync;
 
@@ -16,6 +17,8 @@ public partial class App : Application
         this.serviceProvider = serviceCollection.BuildServiceProvider();
     }
 
+    //public new static App Current => (App)Application.Current;
+
     internal T GetService<T>() => this.serviceProvider.GetService<T>();
 
     private void Application_Startup(object sender, StartupEventArgs e)
@@ -26,6 +29,12 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<MainWindow>();
+        services.AddSingleton<LoadingWindow>();
+
+        services.AddTransient<MainViewModel>();
+        services.AddTransient<MainWindow>();
+
+        services.AddTransient<CreateLibraryViewModel>();
+        services.AddTransient<CreateLibraryWindow>();
     }
 }

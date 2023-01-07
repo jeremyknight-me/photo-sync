@@ -29,7 +29,10 @@
 
     <ItemGroup>
       <Folder Include="Commands\" />
-      <Folder Include="ViewModels\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PhotoSync.Domain\PhotoSync.Domain.csproj" />
     </ItemGroup>
 
 </Project>

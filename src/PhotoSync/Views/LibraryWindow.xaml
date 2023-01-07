@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoSync.Views"
         mc:Ignorable="d"
+        Background="{StaticResource DarkGrayBrush}"
         Title="LibraryWindow" Height="450" Width="800">
     <DockPanel>
         <MenuItem DockPanel.Dock="Top">
