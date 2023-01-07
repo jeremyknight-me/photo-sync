@@ -18,7 +18,7 @@ public partial class MainViewModel
     [RelayCommand]
     private void OpenLibrary(Window currentWindow)
     {
-        // open / refresh library
+        // todo: open library / refresh library / send to library
 
         var next = this.services.GetRequiredService<LibraryWindow>();
         next.Show();
