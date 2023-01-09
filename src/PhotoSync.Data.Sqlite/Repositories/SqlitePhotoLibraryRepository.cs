@@ -44,9 +44,13 @@ public sealed class SqlitePhotoLibraryRepository : IPhotoLibraryRepository
         }
 
         using var context = this.contextFactory.Make(filePath, true);
-        var library = context.PhotoLibraries.First();
-        this.refreshOperation.Run(library);
-        context.SaveChanges();
+        var library = context.PhotoLibraries.SingleOrDefault();
+        if (library is null)
+        {
+            throw new InvalidOperationException("PhotoSync database contains multiple photo libraries.");
+        }
+
+        library.SetFilePath(filePath);
         return library;
     }
 
