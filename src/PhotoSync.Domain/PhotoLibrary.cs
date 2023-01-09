@@ -26,7 +26,7 @@ public sealed class PhotoLibrary : Entity<Guid>
     public IReadOnlyCollection<ExcludedFolder> ExcludedFolders => this.excludedFolders.AsReadOnly();
     public IReadOnlyCollection<Photo> Photos => this.photos.AsReadOnly();
 
-    public string DestinationFolder => Path.GetDirectoryName(this.DestinationFolder) ?? string.Empty;
+    public string DestinationFolder => Path.GetDirectoryName(this.FilePath) ?? string.Empty;
     public string FileName => Path.GetFileName(this.FilePath);
 
     public void AddPhotos(IEnumerable<Photo> photos) => this.photos.AddPhotos(photos);

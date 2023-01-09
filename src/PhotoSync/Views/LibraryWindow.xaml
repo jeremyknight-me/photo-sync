@@ -6,14 +6,43 @@
         xmlns:local="clr-namespace:PhotoSync.Views"
         mc:Ignorable="d"
         Background="{StaticResource DarkGrayBrush}"
-        Title="LibraryWindow" Height="450" Width="800">
+        Title="Library Manager" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="StatusBarText" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="10" />
+        </Style>
+    </Window.Resources>
     <DockPanel>
-        <MenuItem DockPanel.Dock="Top">
-
-        </MenuItem>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Refresh" />
+                <Button Content="Save" />
+            </ToolBar>
+            <ToolBar>
+                <Button Content="Sync" />
+            </ToolBar>
+            <ToolBar>
+                <CheckBox>Exclude Folder</CheckBox>
+                <CheckBox>Show Excluded</CheckBox>
+            </ToolBar>
+        </ToolBarTray>
 
         <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="File: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding Library.FileName}" Style="{StaticResource StatusBarText}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Destination: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding Library.DestinationFolder}" Style="{StaticResource StatusBarText}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
 
+            </StatusBarItem>
         </StatusBar>
 
         <Grid>
