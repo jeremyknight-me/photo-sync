@@ -31,13 +31,14 @@
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="File: " Style="{StaticResource StatusBarText}" />
-                    <TextBlock Text="{Binding Library.FileName}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding LibraryFileName}" Style="{StaticResource StatusBarText}" />
                 </StackPanel>
             </StatusBarItem>
+            <Separator Width="1" />
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Destination: " Style="{StaticResource StatusBarText}" />
-                    <TextBlock Text="{Binding Library.DestinationFolder}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding LibraryDestinationFolder}" Style="{StaticResource StatusBarText}" />
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
@@ -52,7 +53,13 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TreeView DockPanel.Dock="Left">
+            <TreeView DockPanel.Dock="Left"
+                       ItemsSource="{Binding Folders}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
             </TreeView>
 
             <GridSplitter Grid.Column="1" 
