@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PhotoSync.Domain;
 using PhotoSync.Domain.Contracts;
 using PhotoSync.Domain.Operations;
@@ -43,7 +44,7 @@ public sealed class SqlitePhotoLibraryRepository : IPhotoLibraryRepository
             throw new FileNotFoundException($"PhotoSync database could not be found at the file path: {filePath}");
         }
 
-        using var context = this.contextFactory.Make(filePath, true);
+        using var context = this.contextFactory.Make(filePath, false);
         var library = context.PhotoLibraries.SingleOrDefault();
         if (library is null)
         {
@@ -51,13 +52,21 @@ public sealed class SqlitePhotoLibraryRepository : IPhotoLibraryRepository
         }
 
         library.SetFilePath(filePath);
+        this.refreshOperation.Run(library);
+        context.SaveChanges();
         return library;
     }
 
     public void Save(string filePath, PhotoLibrary library)
     {
-        using var context = this.contextFactory.Make(filePath);
-        context.Attach(library);
-        context.SaveChanges();
+        try
+        {
+            using var context = this.contextFactory.Make(filePath);
+            context.SaveChanges();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            var bp = string.Empty;
+        }
     }
 }

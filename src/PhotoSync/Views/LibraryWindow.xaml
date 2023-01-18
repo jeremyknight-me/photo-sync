@@ -3,20 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PhotoSync.Views"
+        xmlns:domainenums="clr-namespace:PhotoSync.Domain.Enums;assembly=PhotoSync.Domain"
         mc:Ignorable="d"
         Background="{StaticResource DarkGrayBrush}"
         Title="Library Manager" Height="450" Width="800">
     <Window.Resources>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
         <Style x:Key="StatusBarText" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="10" />
         </Style>
+
+        <ObjectDataProvider x:Key="PhotoActionEnumData" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="domainenums:PhotoAction"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
                 <Button Content="Refresh" />
-                <Button Content="Save" />
+                <Button Content="Save" Command="{Binding SaveCommand}" />
             </ToolBar>
             <ToolBar>
                 <Button Content="Sync" />
@@ -54,7 +66,14 @@
             </Grid.ColumnDefinitions>
 
             <TreeView DockPanel.Dock="Left"
-                       ItemsSource="{Binding Folders}">
+                      x:Name="folderTreeView"
+                      ItemsSource="{Binding Folders}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedItemChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"
+                                               CommandParameter="{Binding ElementName=folderTreeView,Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <TextBlock Text="{Binding Name}" />
@@ -66,8 +85,42 @@
                           Width="5" 
                           HorizontalAlignment="Stretch" />
 
-            <ListView Grid.Column="2">
-
+            <ListView Grid.Column="2"
+                      ItemsSource="{Binding CurrentPhotos}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Preview" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding FullPath}"
+                                           Height="200" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Details">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Photo.Name}" />
+                                        <TextBlock Text="{Binding Photo.SizeBytes}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Controls">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox 
+                                            Width="Auto" Height="25"
+                                            ItemsSource="{Binding Source={StaticResource PhotoActionEnumData}}" 
+                                            SelectedItem="{Binding ProcessAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
             </ListView>
         </Grid>
 

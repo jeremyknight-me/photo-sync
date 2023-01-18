@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using PhotoSync.Domain.Contracts;
-using PhotoSync.Domain.Operations;
 using PhotoSync.Views;
 
 namespace PhotoSync.ViewModels;
@@ -13,16 +12,13 @@ public partial class MainViewModel
 {
     private readonly IServiceProvider services;
     private readonly IPhotoLibraryRepository libraryRepository;
-    private readonly IRefreshLibraryOperation refreshOperation;
 
     public MainViewModel(
         IServiceProvider serviceProvider,
-        IPhotoLibraryRepository photoLibraryRepository,
-        IRefreshLibraryOperation refreshLibraryOperation)
+        IPhotoLibraryRepository photoLibraryRepository)
     {
         this.services = serviceProvider;
         this.libraryRepository = photoLibraryRepository;
-        this.refreshOperation = refreshLibraryOperation;
     }
 
     [RelayCommand]
@@ -35,8 +31,6 @@ public partial class MainViewModel
         }
 
         var library = this.libraryRepository.Open(path);
-        this.refreshOperation.Run(library);
-        this.libraryRepository.Save(library.FilePath, library);
         var next = this.services.GetRequiredService<LibraryWindow>();
         next.ViewModel.SetLibrary(library);
         next.Show();

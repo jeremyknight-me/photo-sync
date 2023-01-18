@@ -25,11 +25,16 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\PhotoSync.Data.Sqlite\PhotoSync.Data.Sqlite.csproj" />
       <ProjectReference Include="..\PhotoSync.Domain\PhotoSync.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>
