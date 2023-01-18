@@ -21,7 +21,7 @@ public partial class PhotoViewModel
             }
 
             this.Photo.UpdateProcessAction(value);
-            this.OnPropertyChanged(nameof(ProcessAction));
+            this.OnPropertyChanged(nameof(this.ProcessAction));
         }
     }
 

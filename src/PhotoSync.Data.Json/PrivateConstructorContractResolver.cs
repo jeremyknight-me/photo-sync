@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using System.Text.Json.Serialization.Metadata;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace PhotoSync.Data.Json;
 

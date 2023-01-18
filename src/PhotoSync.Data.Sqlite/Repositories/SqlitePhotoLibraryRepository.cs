@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using PhotoSync.Domain;
 using PhotoSync.Domain.Contracts;
 using PhotoSync.Domain.Operations;

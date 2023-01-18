@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
-using Microsoft.VisualBasic;
+﻿using System.Windows;
 
 namespace PhotoSync.Views;
 
