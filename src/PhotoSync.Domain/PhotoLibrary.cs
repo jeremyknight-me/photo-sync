@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PhotoSync.Domain.Extensions;
+using System.Text.Json.Serialization;
 
 namespace PhotoSync.Domain;
 
@@ -13,23 +13,50 @@ public sealed class PhotoLibrary : Entity<Guid>
     private readonly List<ExcludedFolder> excludedFolders = new();
     private readonly List<Photo> photos = new();
 
-    private PhotoLibrary()
-        : base(Guid.NewGuid())
+    private PhotoLibrary() : base(Guid.NewGuid())
     {
     }
 
-    public string FilePath { get; private set; }
-    public DateTimeOffset? LastRefreshed { get; private set; }
-    public DateTimeOffset? LastSynced { get; private set; } = null;
-    public string SourceFolder { get; private set; }
+    [JsonIgnore] public string FilePath { get; private set; }
+    [JsonInclude] public DateTimeOffset? LastRefreshed { get; private set; } = null;
+    [JsonInclude] public DateTimeOffset? LastSynced { get; private set; } = null;
+    public string SourceFolder { get; init; }
 
-    public IReadOnlyCollection<ExcludedFolder> ExcludedFolders => this.excludedFolders.AsReadOnly();
-    public IReadOnlyCollection<Photo> Photos => this.photos.AsReadOnly();
+    public IReadOnlyList<ExcludedFolder> ExcludedFolders
+    {
+        get => this.excludedFolders.AsReadOnly();
+        init
+        {
+            this.excludedFolders.Clear();
+            this.excludedFolders.AddRange(value);
+        }
+    }
+
+    public IReadOnlyList<Photo> Photos
+    {
+        get => this.photos.AsReadOnly();
+        init
+        {
+            this.photos.Clear();
+            this.photos.AddRange(value);
+        }
+    }
 
     public string DestinationFolder => Path.GetDirectoryName(this.FilePath) ?? string.Empty;
     public string FileName => Path.GetFileName(this.FilePath);
 
-    public void AddPhotos(IEnumerable<Photo> photos) => this.photos.AddPhotos(photos);
+    public void AddPhotos(IEnumerable<Photo> newPhotos)
+    {
+        foreach (var photo in newPhotos)
+        {
+            if (this.photos.Any(p => p.RelativePath == photo.RelativePath))
+            {
+                continue;
+            }
+
+            this.photos.Add(photo);
+        }
+    }
 
     public string GetPathRelativeToSource(string path)
     {

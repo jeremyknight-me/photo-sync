@@ -5,6 +5,6 @@ namespace PhotoSync.Domain.Extensions;
 
 public static class ExcludedFoldersExtensions
 {
-    public static bool Exists(this IReadOnlyCollection<ExcludedFolder> folders, string relativePath)
+    public static bool Exists(this IEnumerable<ExcludedFolder> folders, string relativePath)
         => folders.Any(f => f.RelativePath.StartsWith(relativePath));
 }

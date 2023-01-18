@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using PhotoSync.Data.Sqlite;
-using PhotoSync.Data.Sqlite.Repositories;
+using PhotoSync.Data.Json;
 using PhotoSync.Domain.Contracts;
 using PhotoSync.Domain.Operations;
 using PhotoSync.ViewModels;
@@ -22,12 +21,11 @@ public partial class App : Application
     }
 
     //public new static App Current => (App)Application.Current;
-
-    internal T GetService<T>() => this.serviceProvider.GetService<T>();
+    //internal T GetService<T>() => this.serviceProvider.GetService<T>();
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
-        var mainWindow = this.serviceProvider.GetService<MainWindow>();
+        var mainWindow = this.serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
     }
 
@@ -35,9 +33,7 @@ public partial class App : Application
     {
         services.AddTransient<IGetPhotosOperation, GetPhotosOperation>();
         services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
-        services.AddTransient<IPhotoLibraryRepository, SqlitePhotoLibraryRepository>();
-
-        services.AddSingleton<PhotoSyncContextFactory>();
+        services.AddTransient<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
 
         services.AddTransient<MainViewModel>();
         services.AddTransient<MainWindow>();

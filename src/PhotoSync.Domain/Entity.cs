@@ -2,7 +2,7 @@
 
 public abstract class Entity<TId>
 {
-    public virtual TId Id { get; protected set; } = default;
+    public virtual TId Id { get; set; } = default;
 
     protected Entity()
     {
