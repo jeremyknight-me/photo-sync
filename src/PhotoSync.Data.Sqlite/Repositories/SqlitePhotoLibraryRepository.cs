@@ -59,14 +59,8 @@ public sealed class SqlitePhotoLibraryRepository : IPhotoLibraryRepository
 
     public void Save(string filePath, PhotoLibrary library)
     {
-        try
-        {
-            using var context = this.contextFactory.Make(filePath);
-            context.SaveChanges();
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            var bp = string.Empty;
-        }
+        using var context = this.contextFactory.Make(filePath);
+        context.Update(library);
+        context.SaveChanges();
     }
 }
