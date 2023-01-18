@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
+using PhotoSync.Domain.Extensions;
 
 namespace PhotoSync.Domain;
 
@@ -58,6 +59,39 @@ public sealed class PhotoLibrary : Entity<Guid>
         }
     }
 
+    public void AddExcludedFolder(string relativePath)
+    {
+        var trimmed = relativePath.Trim();
+        if (this.excludedFolders.Any(x => x.RelativePath == trimmed))
+        {
+            return;
+        }
+
+        var folder = ExcludedFolder.Create(trimmed);
+        this.excludedFolders.Add(folder);
+    }
+
+    public void CleanExcludedFolders()
+    {
+        var foldersToRemove = new List<ExcludedFolder>();
+        foreach (var folder in this.excludedFolders)
+        {
+            if (this.excludedFolders.Any(x => folder.RelativePath.Length != x.RelativePath.Length
+                && folder.RelativePath.StartsWith(x.RelativePath)))
+            {
+                foldersToRemove.Add(folder);
+            }
+        }
+
+        this.excludedFolders.Remove(foldersToRemove);
+    }
+
+    public void CleanExcludedPhotos()
+    {
+        var roots = this.excludedFolders.Select(x => x.RelativePath).ToArray();
+        this.photos.RemoveAll(p => roots.Any(r => p.RelativePath.StartsWith(r)));
+    }
+
     public string GetPathRelativeToSource(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -69,10 +103,14 @@ public sealed class PhotoLibrary : Entity<Guid>
         return path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
     }
 
-    public void RemoveExcludedPhotos()
+    public void RemoveExcludedFolder(string relativePath)
     {
-        var roots = this.excludedFolders.Select(x => x.RelativePath).ToArray();
-        this.photos.RemoveAll(p => roots.Any(r => p.RelativePath.StartsWith(r)));
+        var trimmed = relativePath.Trim();
+        var folder = this.excludedFolders.SingleOrDefault(x => x.RelativePath == trimmed);
+        if (folder is not null)
+        {
+            this.excludedFolders.Remove(folder);
+        }
     }
 
     public void SetFilePath(string fileName)

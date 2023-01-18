@@ -35,6 +35,8 @@ public partial class App : Application
         services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
         services.AddTransient<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
 
+        services.AddTransient<LoadingWindow>();
+
         services.AddTransient<MainViewModel>();
         services.AddTransient<MainWindow>();
 

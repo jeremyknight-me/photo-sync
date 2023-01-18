@@ -33,8 +33,4 @@
       <ProjectReference Include="..\PhotoSync.Domain\PhotoSync.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Models\" />
-    </ItemGroup>
-
 </Project>

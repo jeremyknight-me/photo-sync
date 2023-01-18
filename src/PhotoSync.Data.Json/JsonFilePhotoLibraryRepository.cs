@@ -35,6 +35,7 @@ public sealed class JsonFilePhotoLibraryRepository : IPhotoLibraryRepository
 
         var json = File.ReadAllText(libraryPath);
         var library = PhotoLibrarySerializer.Deserialize(json);
+        library.SetFilePath(libraryPath);
         this.refreshOperation.Run(library);
         this.Save(libraryPath, library);
         return library;

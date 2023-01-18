@@ -9,7 +9,7 @@
         xmlns:domainenums="clr-namespace:PhotoSync.Domain.Enums;assembly=PhotoSync.Domain"
         mc:Ignorable="d"
         Background="{StaticResource DarkGrayBrush}"
-        Title="Library Manager" Height="450" Width="800">
+        Title="PhotoSync Library Manager" Height="800" Width="1000">
     <Window.Resources>
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -27,15 +27,46 @@
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Content="Refresh" />
-                <Button Content="Save" Command="{Binding SaveCommand}" />
+                <Button Command="{Binding SaveCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE105;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Save" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
             <ToolBar>
-                <Button Content="Sync" />
+                <Button>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE117;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Sync" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
             <ToolBar>
-                <CheckBox>Exclude Folder</CheckBox>
-                <CheckBox>Show Excluded</CheckBox>
+                <CheckBox IsChecked="{Binding ExcludedFolderCheckbox.IsChecked}"
+                          IsEnabled="{Binding ExcludedFolderCheckbox.IsEnabled}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE739;" 
+                                   VerticalAlignment="Center" Visibility="{Binding ExcludedFolderCheckbox.UncheckedVisibility}" />
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE73A;" 
+                                   VerticalAlignment="Center" Visibility="{Binding ExcludedFolderCheckbox.CheckedVisibility}" />
+                        <TextBlock Text=" Exclude Folder" />
+                    </StackPanel>
+                </CheckBox>
+            </ToolBar>
+            <ToolBar>
+                <Button Command="{Binding SyncAllCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE8E1;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Sync All" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding IgnoreAllCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE8E0;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Ignore All" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
         </ToolBarTray>
 
@@ -53,8 +84,18 @@
                     <TextBlock Text="{Binding LibraryDestinationFolder}" Style="{StaticResource StatusBarText}" />
                 </StackPanel>
             </StatusBarItem>
+            <Separator Width="1" />
             <StatusBarItem>
-
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Total: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoTotalCount}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text=" New: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoNewCount}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text=" Sync: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoSyncCount}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text=" Ignore: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoIgnoreCount}" Style="{StaticResource StatusBarText}" />
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
 

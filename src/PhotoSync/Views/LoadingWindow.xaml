@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        Topmost="True"
         Title="Loading..." 
         Height="100" Width="300">
     <Grid Margin="20">

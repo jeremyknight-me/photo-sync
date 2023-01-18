@@ -39,6 +39,7 @@ public sealed class CompressedPhotoLibraryRepository : IPhotoLibraryRepository
         var json = reader.ReadToEnd();
         reader.Close();
         var library = PhotoLibrarySerializer.Deserialize(json);
+        library.SetFilePath(libraryPath);
         this.refreshOperation.Run(library);
         this.Save(libraryPath, library);
         return library;

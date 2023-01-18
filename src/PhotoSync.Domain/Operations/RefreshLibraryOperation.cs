@@ -22,7 +22,8 @@ public sealed class RefreshLibraryOperation : IRefreshLibraryOperation
 
     public void Run(PhotoLibrary library)
     {
-        library.RemoveExcludedPhotos();
+        library.CleanExcludedFolders();
+        library.CleanExcludedPhotos();
         this.UpdatePhotos(library);
     }
 
