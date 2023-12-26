@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PhotoSync.Data.Sqlite;
 using PhotoSync.Data.Sqlite.Repositories;
 using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Operations;
@@ -21,6 +21,8 @@ internal static class DependencyInjectionHelper
     {
         services.AddTransient<IGetPhotosOperation, GetPhotosOperation>();
         services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
+
+        services.AddSingleton<PhotoSyncContextFactory>();
         services.AddTransient<IPhotoLibraryRepository, SqlitePhotoLibraryRepository>();
 
         services.AddTransient<LoadingWindow>();

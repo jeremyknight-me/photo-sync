@@ -8,7 +8,7 @@ public sealed class ExcludedFolder : Entity<ExcludedFolderId>
     {
     }
 
-    public string RelativePath { get; init; }
+    public required string RelativePath { get; init; }
 
     public static ExcludedFolder Create(string relativePath)
         => new()

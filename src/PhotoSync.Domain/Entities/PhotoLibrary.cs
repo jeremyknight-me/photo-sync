@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using PhotoSync.Domain.Extensions;
+﻿using PhotoSync.Domain.Extensions;
 using PhotoSync.Domain.ValueObjects;
 
 namespace PhotoSync.Domain.Entities;
@@ -8,16 +7,16 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
 {
     public const string DefaultLibraryFileName = "photo-sync.db";
 
-    private readonly List<ExcludedFolder> excludedFolders = new();
-    private readonly List<Photo> photos = new();
+    private readonly List<ExcludedFolder> excludedFolders = [];
+    private readonly List<Photo> photos = [];
 
     private PhotoLibrary() : base(PhotoLibraryId.New())
     {
     }
 
-    [JsonIgnore] public string FilePath { get; private set; }
-    [JsonInclude] public DateTimeOffset? LastRefreshed { get; private set; } = null;
-    [JsonInclude] public DateTimeOffset? LastSynced { get; private set; } = null;
+    public string FilePath { get; private set; }
+    public DateTimeOffset? LastRefreshed { get; private set; } = null;
+    public DateTimeOffset? LastSynced { get; private set; } = null;
     public string SourceFolder { get; init; }
 
     public IReadOnlyList<ExcludedFolder> ExcludedFolders

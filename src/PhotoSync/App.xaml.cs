@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PhotoSync;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private readonly IServiceProvider serviceProvider;
 

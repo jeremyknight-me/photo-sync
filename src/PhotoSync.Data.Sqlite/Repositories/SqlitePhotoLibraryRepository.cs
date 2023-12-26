@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using PhotoSync.Domain.Abstractions;
+﻿using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Operations;
 
