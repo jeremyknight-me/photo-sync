@@ -4,7 +4,7 @@
         <RootNamespace>PhotoSync</RootNamespace>
         <AssemblyName>PhotoSync</AssemblyName>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <UseWindowsForms>true</UseWindowsForms>
@@ -23,9 +23,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     </ItemGroup>
 
     <ItemGroup>
