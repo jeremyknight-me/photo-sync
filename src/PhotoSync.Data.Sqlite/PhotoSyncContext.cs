@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PhotoSync.Domain;
+using PhotoSync.Domain.Entities;
 
 namespace PhotoSync.Data.Sqlite;
 

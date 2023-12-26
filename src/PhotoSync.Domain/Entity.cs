@@ -25,11 +25,6 @@ public abstract class Entity<TId>
             return true;
         }
 
-        if (ValueObject.GetUnproxiedType(this) != ValueObject.GetUnproxiedType(other))
-        {
-            return false;
-        }
-
         return this.IsTransient() || other.IsTransient()
             ? false
             : this.Id.Equals(other.Id);
@@ -54,5 +49,5 @@ public abstract class Entity<TId>
 
     public static bool operator !=(Entity<TId> a, Entity<TId> b) => !(a == b);
 
-    public override int GetHashCode() => (ValueObject.GetUnproxiedType(this).ToString() + this.Id).GetHashCode();
+    public override int GetHashCode() => this.Id.GetHashCode();
 }

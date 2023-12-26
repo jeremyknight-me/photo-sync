@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using PhotoSync.Domain;
+using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Enums;
 
 namespace PhotoSync.ViewModels;

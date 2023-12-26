@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PhotoSync.Domain;
 using PhotoSync.Domain.Contracts;
+using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Extensions;
 using PhotoSync.Domain.Operations;
 

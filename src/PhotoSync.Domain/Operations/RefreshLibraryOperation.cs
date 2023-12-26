@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Extensions;
 
 namespace PhotoSync.Domain.Operations;

@@ -1,5 +1,5 @@
-﻿using PhotoSync.Domain;
-using PhotoSync.Domain.Contracts;
+﻿using PhotoSync.Domain.Contracts;
+using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Operations;
 
 namespace PhotoSync.Data.Json;

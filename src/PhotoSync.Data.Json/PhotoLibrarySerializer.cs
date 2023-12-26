@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using PhotoSync.Domain;
+using PhotoSync.Domain.Entities;
 
 namespace PhotoSync.Data.Json;
 

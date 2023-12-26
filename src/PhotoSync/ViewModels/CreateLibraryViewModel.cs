@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using PhotoSync.Domain;
 using PhotoSync.Domain.Contracts;
+using PhotoSync.Domain.Entities;
 using PhotoSync.Extensions;
 using PhotoSync.Views;
 

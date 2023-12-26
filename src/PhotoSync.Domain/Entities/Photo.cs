@@ -1,19 +1,26 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json.Serialization;
 using PhotoSync.Domain.Enums;
+using PhotoSync.Domain.ValueObjects;
 
-namespace PhotoSync.Domain;
+namespace PhotoSync.Domain.Entities;
 
-public sealed class Photo : Entity<Guid>
+public sealed class Photo : Entity<PhotoId>
 {
-    private Photo() : base(Guid.NewGuid())
+    private Photo() : base(PhotoId.New())
     {
     }
 
-    public string RelativePath { get; init; }
+    public string RelativePath
+    {
+        get; init;
+    }
     [JsonInclude] public PhotoAction ProcessAction { get; private set; } = PhotoAction.New;
-    [JsonInclude] public long SizeBytes { get; private set; }
+    [JsonInclude]
+    public long SizeBytes
+    {
+        get; private set;
+    }
 
     public string Name => Path.GetFileName(this.RelativePath);
     public string RelativeFolder => Path.GetDirectoryName(this.RelativePath);

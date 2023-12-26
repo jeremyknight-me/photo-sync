@@ -1,4 +1,5 @@
-﻿using PhotoSync.Domain.Extensions;
+﻿using PhotoSync.Domain.Entities;
+using PhotoSync.Domain.Extensions;
 
 namespace PhotoSync.Domain.Tests.Extensions;
 

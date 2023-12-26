@@ -1,4 +1,6 @@
-﻿namespace PhotoSync.Domain.Contracts;
+﻿using PhotoSync.Domain.Entities;
+
+namespace PhotoSync.Domain.Contracts;
 
 public interface IPhotoLibraryRepository
 {

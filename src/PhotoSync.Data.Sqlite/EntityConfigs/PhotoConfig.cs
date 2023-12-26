@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PhotoSync.Domain;
+using PhotoSync.Domain.Entities;
 
 namespace PhotoSync.Data.Sqlite.EntityConfigs;
 

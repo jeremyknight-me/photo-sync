@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using PhotoSync.Domain;
 using PhotoSync.Domain.Contracts;
+using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Operations;
 
 namespace PhotoSync.Data.Sqlite.Repositories;
