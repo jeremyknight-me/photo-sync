@@ -1,49 +1,23 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using PhotoSync.Data.Json;
-using PhotoSync.Domain.Contracts;
-using PhotoSync.Domain.Operations;
-using PhotoSync.ViewModels;
-using PhotoSync.Views;
 
 namespace PhotoSync;
 
 public partial class App : Application
 {
-    private readonly ServiceProvider serviceProvider;
+    private readonly IServiceProvider serviceProvider;
 
     public App()
     {
-        var serviceCollection = new ServiceCollection();
-        this.ConfigureServices(serviceCollection);
-        this.serviceProvider = serviceCollection.BuildServiceProvider();
+        this.serviceProvider = DependencyInjectionHelper.CreateServiceProvider();
     }
 
     //public new static App Current => (App)Application.Current;
-    //internal T GetService<T>() => this.serviceProvider.GetService<T>();
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         var mainWindow = this.serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
-    }
-
-    private void ConfigureServices(IServiceCollection services)
-    {
-        services.AddTransient<IGetPhotosOperation, GetPhotosOperation>();
-        services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
-        services.AddTransient<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
-
-        services.AddTransient<LoadingWindow>();
-
-        services.AddTransient<MainViewModel>();
-        services.AddTransient<MainWindow>();
-
-        services.AddTransient<CreateLibraryViewModel>();
-        services.AddTransient<CreateLibraryWindow>();
-
-        services.AddTransient<LibraryViewModel>();
-        services.AddTransient<LibraryWindow>();
     }
 }
