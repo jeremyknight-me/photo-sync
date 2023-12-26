@@ -19,17 +19,10 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
     {
     }
 
-    [JsonIgnore]
-    public string FilePath
-    {
-        get; private set;
-    }
+    [JsonIgnore] public string FilePath { get; private set; }
     [JsonInclude] public DateTimeOffset? LastRefreshed { get; private set; } = null;
     [JsonInclude] public DateTimeOffset? LastSynced { get; private set; } = null;
-    public string SourceFolder
-    {
-        get; init;
-    }
+    public string SourceFolder { get; init; }
 
     public IReadOnlyList<ExcludedFolder> ExcludedFolders
     {

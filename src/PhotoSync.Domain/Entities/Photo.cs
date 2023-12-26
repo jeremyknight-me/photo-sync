@@ -11,16 +11,10 @@ public sealed class Photo : Entity<PhotoId>
     {
     }
 
-    public string RelativePath
-    {
-        get; init;
-    }
+    public string RelativePath { get; init; }
+
     [JsonInclude] public PhotoAction ProcessAction { get; private set; } = PhotoAction.New;
-    [JsonInclude]
-    public long SizeBytes
-    {
-        get; private set;
-    }
+    [JsonInclude] public long SizeBytes { get; private set; }
 
     public string Name => Path.GetFileName(this.RelativePath);
     public string RelativeFolder => Path.GetDirectoryName(this.RelativePath);
