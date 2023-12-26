@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using PhotoSync.Data.Json;
-using PhotoSync.Domain.Contracts;
+using PhotoSync.Data.Sqlite.Repositories;
+using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Operations;
 using PhotoSync.ViewModels;
 using PhotoSync.Views;
@@ -21,7 +21,7 @@ internal static class DependencyInjectionHelper
     {
         services.AddTransient<IGetPhotosOperation, GetPhotosOperation>();
         services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
-        services.AddTransient<IPhotoLibraryRepository, JsonFilePhotoLibraryRepository>();
+        services.AddTransient<IPhotoLibraryRepository, SqlitePhotoLibraryRepository>();
 
         services.AddTransient<LoadingWindow>();
 

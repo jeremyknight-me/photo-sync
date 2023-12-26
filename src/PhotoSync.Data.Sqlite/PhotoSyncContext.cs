@@ -20,7 +20,7 @@ public sealed class PhotoSyncContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var assembly = this.GetType().Assembly;
-        modelBuilder.ApplyConfigurationsFromAssembly(assembly, x => x.Namespace == "PhotoSync.Data.Sqlite.EntityConfigs");
+        var assembly = typeof(PhotoSyncContext).Assembly;
+        modelBuilder.ApplyConfigurationsFromAssembly(assembly, x => x.Namespace == "PhotoSync.Data.Sqlite.Configuration");
     }
 }

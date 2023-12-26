@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 using PhotoSync.Domain.Entities;
 
-namespace PhotoSync.Data.Sqlite.EntityConfigs;
+namespace PhotoSync.Data.Sqlite.Configuration;
 
 internal sealed class PhotoLibraryConfig : IEntityTypeConfiguration<PhotoLibrary>
 {

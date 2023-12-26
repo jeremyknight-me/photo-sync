@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using PhotoSync.Domain.Contracts;
+using PhotoSync.Domain.Abstractions;
 using PhotoSync.Views;
 
 namespace PhotoSync.ViewModels;

@@ -1,6 +1,6 @@
 ﻿using PhotoSync.Domain.Entities;
 
-namespace PhotoSync.Domain.Contracts;
+namespace PhotoSync.Domain.Abstractions;
 
 public interface IPhotoLibraryRepository
 {
