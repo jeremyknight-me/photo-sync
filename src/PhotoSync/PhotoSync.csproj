@@ -19,7 +19,7 @@
         <RepositoryUrl>https://github.com/jeremyknight-me/photo-sync</RepositoryUrl>
         <PackageProjectUrl>https://github.com/jeremyknight-me/photo-sync</PackageProjectUrl>
         <Copyright>Jeremy Knight</Copyright>
-        <Version>1.0.0-alpha</Version>
+        <Version>0.0.1-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>
