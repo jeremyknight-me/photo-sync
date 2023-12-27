@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PhotoSync;
 
-public partial class App : System.Windows.Application
+public partial class App : Application
 {
     private readonly IServiceProvider serviceProvider;
 

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Forms;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
 using PhotoSync.Domain.Abstractions;
 using PhotoSync.Views;
 
@@ -55,11 +54,12 @@ public partial class MainViewModel
             Filter = "db files (*.db)|*.db|All Files (*.*)|*.*",
             InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
             Multiselect = false,
-            Title = "Open Library"
+            Title = "Open Library",
+            AddToRecent = false
         };
 
         var result = dialog.ShowDialog();
-        if (result == DialogResult.OK)
+        if (result == true)
         {
             var path = dialog.FileName;
             if (!string.IsNullOrWhiteSpace(path))

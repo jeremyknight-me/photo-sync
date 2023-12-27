@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Windows;
-using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
 using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Entities;
 using PhotoSync.Extensions;
@@ -97,17 +94,20 @@ public partial class CreateLibraryViewModel
 
     private string GetFolderPath(string description)
     {
-        var dialog = new FolderBrowserDialog
+        var myPictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        var dialog = new OpenFolderDialog
         {
-            Description = description,
-            RootFolder = Environment.SpecialFolder.MyPictures,
-            ShowNewFolderButton = false,
-            UseDescriptionForTitle = true
+            Multiselect = false,
+            InitialDirectory = myPictures,
+            Title = description,
+            DefaultDirectory = myPictures,
+            //RootDirectory = myPictures
+            AddToRecent = false
         };
         var result = dialog.ShowDialog();
-        if (result == DialogResult.OK)
+        if (result == true)
         {
-            var path = dialog.SelectedPath;
+            var path = dialog.FolderName;
             if (!string.IsNullOrEmpty(path))
             {
                 return path;
