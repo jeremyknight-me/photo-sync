@@ -1,5 +1,4 @@
-﻿using PhotoSync.Domain.Extensions;
-using PhotoSync.Domain.ValueObjects;
+﻿using PhotoSync.Domain.ValueObjects;
 
 namespace PhotoSync.Domain.Entities;
 
@@ -7,107 +6,28 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
 {
     public const string DefaultLibraryFileName = "photo-sync.db";
 
-    private readonly List<ExcludedFolder> excludedFolders = [];
-    private readonly List<Photo> photos = [];
+    private readonly List<SourceFolder> sourceFolders = [];
 
     private PhotoLibrary() : base(PhotoLibraryId.New())
     {
     }
 
+    public IReadOnlyList<SourceFolder> SourceFolders
+    {
+        get => this.sourceFolders.AsReadOnly();
+        init
+        {
+            this.sourceFolders.Clear();
+            this.sourceFolders.AddRange(value);
+        }
+    }
+
     public string FilePath { get; private set; }
     public DateTimeOffset? LastRefreshed { get; private set; } = null;
     public DateTimeOffset? LastSynced { get; private set; } = null;
-    public string SourceFolder { get; init; }
-
-    public IReadOnlyList<ExcludedFolder> ExcludedFolders
-    {
-        get => this.excludedFolders.AsReadOnly();
-        init
-        {
-            this.excludedFolders.Clear();
-            this.excludedFolders.AddRange(value);
-        }
-    }
-
-    public IReadOnlyList<Photo> Photos
-    {
-        get => this.photos.AsReadOnly();
-        init
-        {
-            this.photos.Clear();
-            this.photos.AddRange(value);
-        }
-    }
 
     public string DestinationFolder => Path.GetDirectoryName(this.FilePath) ?? string.Empty;
     public string FileName => Path.GetFileName(this.FilePath);
-
-    public void AddPhotos(IEnumerable<Photo> newPhotos)
-    {
-        foreach (var photo in newPhotos)
-        {
-            if (this.photos.Any(p => p.RelativePath == photo.RelativePath))
-            {
-                continue;
-            }
-
-            this.photos.Add(photo);
-        }
-    }
-
-    public void AddExcludedFolder(string relativePath)
-    {
-        var trimmed = relativePath.Trim();
-        if (this.excludedFolders.Any(x => x.RelativePath == trimmed))
-        {
-            return;
-        }
-
-        var folder = ExcludedFolder.Create(trimmed);
-        this.excludedFolders.Add(folder);
-    }
-
-    public void CleanExcludedFolders()
-    {
-        var foldersToRemove = new List<ExcludedFolder>();
-        foreach (var folder in this.excludedFolders)
-        {
-            if (this.excludedFolders.Any(x => folder.RelativePath.Length != x.RelativePath.Length
-                && folder.RelativePath.StartsWith(x.RelativePath)))
-            {
-                foldersToRemove.Add(folder);
-            }
-        }
-
-        this.excludedFolders.Remove(foldersToRemove);
-    }
-
-    public void CleanExcludedPhotos()
-    {
-        var roots = this.excludedFolders.Select(x => x.RelativePath).ToArray();
-        this.photos.RemoveAll(p => roots.Any(r => p.RelativePath.StartsWith(r)));
-    }
-
-    public string GetPathRelativeToSource(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            return string.Empty;
-        }
-
-        var sourcePathLength = this.SourceFolder.Length;
-        return path.Remove(0, sourcePathLength).TrimStart(new[] { '\\' });
-    }
-
-    public void RemoveExcludedFolder(string relativePath)
-    {
-        var trimmed = relativePath.Trim();
-        var folder = this.excludedFolders.SingleOrDefault(x => x.RelativePath == trimmed);
-        if (folder is not null)
-        {
-            this.excludedFolders.Remove(folder);
-        }
-    }
 
     public void SetFilePath(string fileName)
     {
@@ -126,12 +46,9 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
         this.FilePath = trimmed;
     }
 
-    public void UpdateLastRefreshed(DateTimeOffset date) => this.LastRefreshed = date;
+    public void UpdateLastRefreshed(DateTimeOffset date)
+        => this.LastRefreshed = date;
 
-    public static PhotoLibrary Create(string filePath, string sourceFolder)
-        => new()
-        {
-            FilePath = filePath.Trim(),
-            SourceFolder = sourceFolder.Trim()
-        };
+    public static PhotoLibrary Create(string filePath)
+        => new() { FilePath = filePath.Trim() };
 }

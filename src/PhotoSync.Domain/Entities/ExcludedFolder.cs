@@ -8,11 +8,14 @@ public sealed class ExcludedFolder : Entity<ExcludedFolderId>
     {
     }
 
+    public required SourceFolderId SourceFolderId { get; init; }
+    public SourceFolder SourceFolder { get; init; }
     public required string RelativePath { get; init; }
 
-    public static ExcludedFolder Create(string relativePath)
+    public static ExcludedFolder Create(SourceFolderId sourceFolderId, string relativePath)
         => new()
         {
+            SourceFolderId = sourceFolderId,
             RelativePath = relativePath.Trim()
         };
 }

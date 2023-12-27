@@ -17,7 +17,7 @@ public sealed class SqlitePhotoLibraryRepository : IPhotoLibraryRepository
         this.refreshOperation = refreshLibraryOperation;
     }
 
-    public PhotoLibrary Create(string filePath, string sourceFolder)
+    public PhotoLibrary Create(string filePath)
     {
         using var context = this.contextFactory.Make(filePath, true);
         if (context.PhotoLibraries.Any())
@@ -25,7 +25,7 @@ public sealed class SqlitePhotoLibraryRepository : IPhotoLibraryRepository
             throw new InvalidOperationException("PhotoSync database already exists at this file path.");
         }
 
-        var library = PhotoLibrary.Create(filePath, sourceFolder);
+        var library = PhotoLibrary.Create(filePath);
         this.refreshOperation.Run(library);
         context.PhotoLibraries.Add(library);
         context.SaveChanges();

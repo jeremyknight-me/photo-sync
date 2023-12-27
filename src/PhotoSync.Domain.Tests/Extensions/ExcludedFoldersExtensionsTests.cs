@@ -1,5 +1,6 @@
 ﻿using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Extensions;
+using PhotoSync.Domain.ValueObjects;
 
 namespace PhotoSync.Domain.Tests.Extensions;
 
@@ -31,7 +32,7 @@ public class ExcludedFoldersExtensionsTests
     private IEnumerable<ExcludedFolder> GetSampleData()
         => new List<ExcludedFolder>
         {
-            ExcludedFolder.Create("a\\b"),
-            ExcludedFolder.Create("a\\b\\c")
+            ExcludedFolder.Create(SourceFolderId.New(), "a\\b"),
+            ExcludedFolder.Create(SourceFolderId.New(), "a\\b\\c")
         };
 }

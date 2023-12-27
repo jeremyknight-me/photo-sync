@@ -15,8 +15,7 @@ public sealed class PhotoSyncContext : DbContext
     }
 
     public DbSet<PhotoLibrary> PhotoLibraries { get; set; }
-    public DbSet<ExcludedFolder> ExcludedFolders { get; set; }
-    public DbSet<Photo> Photos { get; set; }
+    public DbSet<SourceFolder> SourceFolders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

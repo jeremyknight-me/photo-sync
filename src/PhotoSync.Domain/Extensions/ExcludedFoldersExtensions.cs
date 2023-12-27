@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using PhotoSync.Domain.Entities;
+﻿using PhotoSync.Domain.Entities;
 
 namespace PhotoSync.Domain.Extensions;
 

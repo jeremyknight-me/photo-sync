@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Extensions;
 
@@ -23,27 +20,32 @@ public sealed class RefreshLibraryOperation : IRefreshLibraryOperation
 
     public void Run(PhotoLibrary library)
     {
-        library.CleanExcludedFolders();
-        library.CleanExcludedPhotos();
-        this.UpdatePhotos(library);
+        foreach (var sourceFolder in library.SourceFolders)
+        {
+            sourceFolder.CleanExcludedFolders();
+            sourceFolder.CleanExcludedPhotos();
+            this.UpdatePhotos(sourceFolder);
+        }
+
+        library.UpdateLastRefreshed(DateTimeOffset.Now);
     }
 
-    private void UpdatePhotos(PhotoLibrary library)
+    private void UpdatePhotos(SourceFolder sourceFolder)
     {
-        var files = this.photosQuery.Run(library);
+        var files = this.photosQuery.Run(sourceFolder);
         var exceptions = new ConcurrentBag<Exception>();
         var newPhotos = new ConcurrentBag<Photo>();
         Parallel.ForEach(files, file =>
         {
             try
             {
-                var relativePath = library.GetPathRelativeToSource(file.FullName);
-                if (library.ExcludedFolders.Exists(relativePath))
+                var relativePath = sourceFolder.GetPathRelativeToSource(file.FullName);
+                if (sourceFolder.ExcludedFolders.Exists(relativePath))
                 {
                     return;
                 }
 
-                var photo = library.Photos.FirstOrDefault(x => x.RelativePath == relativePath);
+                var photo = sourceFolder.Photos.FirstOrDefault(x => x.RelativePath == relativePath);
                 if (photo is null)
                 {
                     var newPhoto = Photo.Create(relativePath, file.Length);
@@ -67,9 +69,7 @@ public sealed class RefreshLibraryOperation : IRefreshLibraryOperation
 
         if (newPhotos.Any())
         {
-            library.AddPhotos(newPhotos);
+            sourceFolder.AddPhotos(newPhotos);
         }
-
-        library.UpdateLastRefreshed(DateTimeOffset.Now);
     }
 }
