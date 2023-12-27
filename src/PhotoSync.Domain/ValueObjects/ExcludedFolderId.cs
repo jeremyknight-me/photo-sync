@@ -2,7 +2,7 @@
 
 namespace PhotoSync.Domain.ValueObjects;
 
-[StronglyTypedId]
+[StronglyTypedId(Template.Guid, "guid-efcore")]
 public partial struct ExcludedFolderId
 {
 }

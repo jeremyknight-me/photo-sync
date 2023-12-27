@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
         <PackageReference Include="StronglyTypedId" Version="1.0.0-beta07" PrivateAssets="all" ExcludeAssets="runtime" />
+        <PackageReference Include="StronglyTypedId.Templates" Version="1.0.0-beta07" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using PhotoSync.Domain.Entities;
+using PhotoSync.Domain.ValueObjects;
 
 namespace PhotoSync.Data.Sqlite.Configuration;
 
@@ -13,6 +14,7 @@ internal sealed class PhotoLibraryConfig : IEntityTypeConfiguration<PhotoLibrary
 
         builder.Ignore(x => x.FilePath);
 
+        builder.Property(x => x.Id).HasConversion(new PhotoLibraryId.EfCoreValueConverter());
         builder.Property(x => x.SourceFolder).IsRequired();
 
         builder.HasMany(x => x.ExcludedFolders).WithOne();
