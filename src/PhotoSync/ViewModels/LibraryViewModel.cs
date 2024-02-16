@@ -52,7 +52,7 @@ public partial class LibraryViewModel
         this.refreshOperation = refreshLibraryOperation;
         this.excludedFolderCheckbox = new()
         {
-            OnCheckedChanged = ToggleExcludeFolder
+            ////OnCheckedChanged = ToggleExcludeFolder
         };
     }
 
@@ -61,9 +61,9 @@ public partial class LibraryViewModel
     public void SetLibrary(PhotoLibrary library)
     {
         this.Library = library;
-        this.LibraryDestinationFolder = library.DestinationFolder;
-        this.LibraryFileName = library.FileName;
-        this.LoadTreeFolders();
+        //this.LibraryDestinationFolder = library.DestinationFolder;
+        //this.LibraryFileName = library.FileName;
+        //this.LoadTreeFolders();
     }
 
     [RelayCommand(CanExecute = nameof(CanIgnoreAll))]
@@ -98,10 +98,10 @@ public partial class LibraryViewModel
         this.ExcludedFolderCheckbox.IsChecked = vm.IsExcluded;
         this.IgnoreAllCommand.NotifyCanExecuteChanged();
         this.SyncAllCommand.NotifyCanExecuteChanged();
-        if (!vm.IsExcluded)
-        {
-            this.LoadFolderPhotos();
-        }
+        //if (!vm.IsExcluded)
+        //{
+        //    this.LoadFolderPhotos();
+        //}
     }
 
     [RelayCommand(CanExecute = nameof(CanSyncAll))]
@@ -115,76 +115,76 @@ public partial class LibraryViewModel
 
     private bool CanSyncAll() => this.CurrentPhotos.Any();
 
-    private void ToggleExcludeFolder(bool isExcluded)
-    {
-        this.CurrentPhotos.Clear();
-        if (isExcluded)
-        {
-            this.Library.AddExcludedFolder(this.currentFolder.RelativePath);
-            this.PhotoTotalCount = 0;
-            this.PhotoNewCount = 0;
-            this.PhotoIgnoreCount = 0;
-            this.PhotoSyncCount = 0;
-        }
-        else
-        {
-            this.Library.RemoveExcludedFolder(this.currentFolder.RelativePath);
-            this.LoadFolderPhotos();
-        }
+    //private void ToggleExcludeFolder(bool isExcluded)
+    //{
+    //    this.CurrentPhotos.Clear();
+    //    if (isExcluded)
+    //    {
+    //        this.Library.AddExcludedFolder(this.currentFolder.RelativePath);
+    //        this.PhotoTotalCount = 0;
+    //        this.PhotoNewCount = 0;
+    //        this.PhotoIgnoreCount = 0;
+    //        this.PhotoSyncCount = 0;
+    //    }
+    //    else
+    //    {
+    //        this.Library.RemoveExcludedFolder(this.currentFolder.RelativePath);
+    //        this.LoadFolderPhotos();
+    //    }
 
-        this.CurrentFolder.SetIsExcluded(isExcluded);
-        this.OnPropertyChanged(nameof(this.CurrentPhotos));
-    }
+    //    this.CurrentFolder.SetIsExcluded(isExcluded);
+    //    this.OnPropertyChanged(nameof(this.CurrentPhotos));
+    //}
 
-    private void LoadFolderPhotos()
-    {
-        var vm = this.CurrentFolder;
-        var photos = this.Library.Photos.Where(x => x.RelativeFolder == vm.RelativePath)
-            .Select(x => new PhotoViewModel
-            {
-                Photo = x,
-                FullPath = Path.Combine(this.Library.SourceFolder, x.RelativePath)
-            })
-            .ToList();
-        this.CurrentPhotos = photos;
-        this.PhotoTotalCount = photos.Count();
-        this.PhotoNewCount = photos.Count(x => x.ProcessAction == Domain.Enums.PhotoAction.New);
-        this.PhotoIgnoreCount = photos.Count(x => x.ProcessAction == Domain.Enums.PhotoAction.Ignore);
-        this.PhotoSyncCount = photos.Count(x => x.ProcessAction == Domain.Enums.PhotoAction.Sync);
-    }
+    //private void LoadFolderPhotos()
+    //{
+    //    var vm = this.CurrentFolder;
+    //    var photos = this.Library.Photos.Where(x => x.RelativeFolder == vm.RelativePath)
+    //        .Select(x => new PhotoViewModel
+    //        {
+    //            Photo = x,
+    //            FullPath = Path.Combine(this.Library.SourceFolder, x.RelativePath)
+    //        })
+    //        .ToList();
+    //    this.CurrentPhotos = photos;
+    //    this.PhotoTotalCount = photos.Count();
+    //    this.PhotoNewCount = photos.Count(x => x.ProcessAction == Domain.Enums.PhotoAction.New);
+    //    this.PhotoIgnoreCount = photos.Count(x => x.ProcessAction == Domain.Enums.PhotoAction.Ignore);
+    //    this.PhotoSyncCount = photos.Count(x => x.ProcessAction == Domain.Enums.PhotoAction.Sync);
+    //}
 
-    private void LoadTreeFolders()
-    {
-        var path = this.Library.SourceFolder;
-        this.Folders.Clear();
+    //private void LoadTreeFolders()
+    //{
+    //    var path = this.Library.SourceFolder;
+    //    this.Folders.Clear();
 
-        if (!Directory.Exists(path))
-        {
-            return;
-        }
+    //    if (!Directory.Exists(path))
+    //    {
+    //        return;
+    //    }
 
-        var root = new DirectoryInfo(path);
-        this.Folders = this.CreateFolderItems(root);
-    }
+    //    var root = new DirectoryInfo(path);
+    //    this.Folders = this.CreateFolderItems(root);
+    //}
 
-    private List<LibraryFolderViewModel> CreateFolderItems(DirectoryInfo directoryInfo, LibraryFolderViewModel parent = null)
-    {
-        var folderItems = new List<LibraryFolderViewModel>();
-        foreach (var directory in directoryInfo.GetDirectories())
-        {
-            var relativePath = this.Library.GetPathRelativeToSource(directory.FullName);
-            var folder = new LibraryFolderViewModel
-            {
-                Name = directory.Name,
-                FullPath = directory.FullName,
-                RelativePath = relativePath,
-                IsExcluded = this.Library.ExcludedFolders.Exists(relativePath),
-                Parent = parent
-            };
-            folder.Children = this.CreateFolderItems(directory, folder);
-            folderItems.Add(folder);
-        }
+    //private List<LibraryFolderViewModel> CreateFolderItems(DirectoryInfo directoryInfo, LibraryFolderViewModel parent = null)
+    //{
+    //    var folderItems = new List<LibraryFolderViewModel>();
+    //    foreach (var directory in directoryInfo.GetDirectories())
+    //    {
+    //        var relativePath = this.Library.GetPathRelativeToSource(directory.FullName);
+    //        var folder = new LibraryFolderViewModel
+    //        {
+    //            Name = directory.Name,
+    //            FullPath = directory.FullName,
+    //            RelativePath = relativePath,
+    //            IsExcluded = this.Library.ExcludedFolders.Exists(relativePath),
+    //            Parent = parent
+    //        };
+    //        folder.Children = this.CreateFolderItems(directory, folder);
+    //        folderItems.Add(folder);
+    //    }
 
-        return folderItems;
-    }
+    //    return folderItems;
+    //}
 }

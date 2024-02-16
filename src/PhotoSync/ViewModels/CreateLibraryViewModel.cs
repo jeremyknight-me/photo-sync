@@ -59,8 +59,8 @@ public partial class CreateLibraryViewModel
             return;
         }
 
-        var filePath = Path.Combine(this.destinationFolder, this.destinationFileName);
-        var library = this.libraryRepository.Create(filePath, this.sourceFolder);
+        var filePath = Path.Combine(this.DestinationFolder, this.DestinationFileName);
+        var library = this.libraryRepository.Create(filePath);
 
         var next = this.services.GetRequiredService<LibraryWindow>();
         next.ViewModel.SetLibrary(library);
@@ -101,7 +101,6 @@ public partial class CreateLibraryViewModel
             InitialDirectory = myPictures,
             Title = description,
             DefaultDirectory = myPictures,
-            //RootDirectory = myPictures
             AddToRecent = false
         };
         var result = dialog.ShowDialog();
@@ -121,17 +120,17 @@ public partial class CreateLibraryViewModel
     {
         var errors = new Dictionary<string, IList<string>>();
 
-        if (string.IsNullOrWhiteSpace(this.destinationFileName))
+        if (string.IsNullOrWhiteSpace(this.DestinationFileName))
         {
             errors.AddError("Destination", "Destination requires a file name");
         }
 
-        if (string.IsNullOrWhiteSpace(this.destinationFolder))
+        if (string.IsNullOrWhiteSpace(this.DestinationFolder))
         {
             errors.AddError("Destination", "Destination requires a folder path");
         }
 
-        if (string.IsNullOrWhiteSpace(this.sourceFolder))
+        if (string.IsNullOrWhiteSpace(this.SourceFolder))
         {
             errors.AddError("Source", "Source requires a folder path");
         }
