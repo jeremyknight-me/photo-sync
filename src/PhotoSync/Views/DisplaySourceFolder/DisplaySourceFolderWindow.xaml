@@ -1,0 +1,169 @@
+﻿<Window x:Class="PhotoSync.Views.DisplaySourceFolder.DisplaySourceFolderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PhotoSync.Views.DisplaySourceFolder"
+        xmlns:domainenums="clr-namespace:PhotoSync.Domain.Enums;assembly=PhotoSync.Domain"
+        mc:Ignorable="d"
+        Background="{StaticResource DarkGrayBrush}"
+        Title="PhotoSync Source Folder Manager" Height="800" Width="1000">
+    <Window.Resources>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="StatusBarText" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="10" />
+        </Style>
+
+        <ObjectDataProvider x:Key="PhotoActionEnumData" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="domainenums:PhotoAction"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="{Binding SaveCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE105;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Save" />
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+            <ToolBar>
+                <Button>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE117;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Sync" />
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+            <ToolBar>
+                <CheckBox IsChecked="{Binding ExcludedFolderCheckbox.IsChecked}"
+                  IsEnabled="{Binding ExcludedFolderCheckbox.IsEnabled}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE739;" 
+                           VerticalAlignment="Center" Visibility="{Binding ExcludedFolderCheckbox.UncheckedVisibility}" />
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE73A;" 
+                           VerticalAlignment="Center" Visibility="{Binding ExcludedFolderCheckbox.CheckedVisibility}" />
+                        <TextBlock Text=" Exclude Folder" />
+                    </StackPanel>
+                </CheckBox>
+            </ToolBar>
+            <ToolBar>
+                <Button Command="{Binding SyncAllCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE8E1;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Sync All" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding IgnoreAllCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xE8E0;" VerticalAlignment="Center" />
+                        <TextBlock Text=" Ignore All" />
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="File: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding LibraryFileName}" Style="{StaticResource StatusBarText}" />
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Width="1" />
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Destination: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding LibraryDestinationFolder}" Style="{StaticResource StatusBarText}" />
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Width="1" />
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Total: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoTotalCount}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text=" New: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoNewCount}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text=" Sync: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoSyncCount}" Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text=" Ignore: " Style="{StaticResource StatusBarText}" />
+                    <TextBlock Text="{Binding PhotoIgnoreCount}" Style="{StaticResource StatusBarText}" />
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TreeView DockPanel.Dock="Left"
+              x:Name="folderTreeView"
+              ItemsSource="{Binding Folders}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedItemChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"
+                                       CommandParameter="{Binding ElementName=folderTreeView,Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" 
+                  Width="5" 
+                  HorizontalAlignment="Stretch" />
+
+            <ListView Grid.Column="2"
+              ItemsSource="{Binding CurrentPhotos}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Preview" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding FullPath}"
+                                   Height="200" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Details">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Photo.Name}" />
+                                        <TextBlock Text="{Binding Photo.SizeBytes}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Controls">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox 
+                                    Width="Auto" Height="25"
+                                    ItemsSource="{Binding Source={StaticResource PhotoActionEnumData}}" 
+                                    SelectedItem="{Binding ProcessAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+    </DockPanel>
+</Window>

@@ -57,7 +57,7 @@ public partial class CreateLibraryViewModel : ObservableObject
         var filePath = Path.Combine(this.DestinationFolder, this.DestinationFileName);
         var library = this.libraryRepository.Create(filePath);
 
-        var next = this.services.GetRequiredService<Views.DisplayLibrary.DisplayLibraryWindow>();
+        var next = this.services.GetRequiredService<DisplayLibrary.DisplayLibraryWindow>();
         next.ViewModel.SetLibrary(library);
         next.Show();
         currentWindow.Close();

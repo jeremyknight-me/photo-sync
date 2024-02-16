@@ -1,10 +1,8 @@
 ﻿using PhotoSync.Domain.Entities;
-using PhotoSync.Domain.Extensions;
-using PhotoSync.Domain.ValueObjects;
 
-namespace PhotoSync.Domain.Tests.Extensions;
+namespace PhotoSync.Domain.Tests.Entities;
 
-public class ExcludedFoldersExtensionsTests
+public class SourceFolderTests
 {
     [Theory]
     [InlineData(false, null)]
@@ -22,16 +20,22 @@ public class ExcludedFoldersExtensionsTests
     [InlineData(true, "a\\b\\c\\123.png")]
     [InlineData(true, "a\\b")]
     [InlineData(true, "a\\b\\12.png")]
-    public void Exists_Theories(bool expected, string pathToFind)
+    public void ExistsInExcludedFolders_Theories(bool expected, string pathToFind)
     {
         var data = this.GetSampleData();
-        var actual = data.Exists(pathToFind);
+        var sut = SourceFolder.Create("");
+        foreach (var item in data)
+        {
+            sut.AddExcludedFolder(item);
+        }
+
+        var actual = sut.ExistsInExcludedFolders(pathToFind);
         Assert.Equal(expected, actual);
     }
 
-    private IEnumerable<ExcludedFolder> GetSampleData()
+    private IEnumerable<string> GetSampleData()
         => [
-            ExcludedFolder.Create(SourceFolderId.New(), "a\\b"),
-            ExcludedFolder.Create(SourceFolderId.New(), "a\\b\\c")
+            "a\\b",
+            "a\\b\\c"
         ];
 }

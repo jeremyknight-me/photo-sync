@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using PhotoSync.Domain.Entities;
-using PhotoSync.Domain.Extensions;
 
 namespace PhotoSync.Domain.Operations;
 
@@ -36,7 +35,7 @@ public sealed class RefreshSourceFolderOperation : IRefreshSourceFolderOperation
             try
             {
                 var relativePath = sourceFolder.GetPathRelativeToSource(file.FullName);
-                if (sourceFolder.ExcludedFolders.Exists(relativePath))
+                if (sourceFolder.ExistsInExcludedFolders(relativePath))
                 {
                     return;
                 }

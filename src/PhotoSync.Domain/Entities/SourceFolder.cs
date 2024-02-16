@@ -1,5 +1,4 @@
-﻿using PhotoSync.Domain.Extensions;
-using PhotoSync.Domain.ValueObjects;
+﻿using PhotoSync.Domain.ValueObjects;
 
 namespace PhotoSync.Domain.Entities;
 
@@ -75,7 +74,7 @@ public sealed class SourceFolder : Entity<SourceFolderId>
             }
         }
 
-        this.excludedFolders.Remove(foldersToRemove);
+        this.RemoveExcludedFolders(foldersToRemove);
     }
 
     public void CleanExcludedPhotos()
@@ -83,6 +82,10 @@ public sealed class SourceFolder : Entity<SourceFolderId>
         var roots = this.excludedFolders.Select(x => x.RelativePath).ToArray();
         this.photos.RemoveAll(p => roots.Any(r => p.RelativePath.StartsWith(r)));
     }
+
+    public bool ExistsInExcludedFolders(string relativePath)
+        => !string.IsNullOrWhiteSpace(relativePath)
+            && this.excludedFolders.Any(f => relativePath.StartsWith(f.RelativePath));
 
     public string GetPathRelativeToSource(string path)
     {
@@ -102,6 +105,17 @@ public sealed class SourceFolder : Entity<SourceFolderId>
         if (folder is not null)
         {
             this.excludedFolders.Remove(folder);
+        }
+    }
+
+    public void RemoveExcludedFolders(IEnumerable<ExcludedFolder> foldersToRemove)
+    {
+        foreach (var folder in foldersToRemove)
+        {
+            if (this.excludedFolders.Any(x => x.Id == folder.Id))
+            {
+                this.excludedFolders.Remove(folder);
+            }
         }
     }
 
