@@ -6,5 +6,5 @@ public interface IPhotoLibraryRepository
 {
     PhotoLibrary Create(string filePath);
     PhotoLibrary Open(string filePath);
-    void Save(string filePath, PhotoLibrary library);
+    void Save(PhotoLibrary library);
 }

@@ -15,10 +15,10 @@ public partial class LibraryViewModel
     private readonly IRefreshLibraryOperation refreshOperation;
 
     [ObservableProperty]
-    private List<PhotoViewModel> currentPhotos = new();
+    private List<PhotoViewModel> currentPhotos = [];
 
     [ObservableProperty]
-    private List<LibraryFolderViewModel> folders = new();
+    private List<LibraryFolderViewModel> folders = [];
 
     [ObservableProperty]
     private string libraryFileName;
@@ -81,7 +81,7 @@ public partial class LibraryViewModel
     private void Save()
     {
         this.refreshOperation.Run(this.Library);
-        this.libraryRepository.Save(this.Library.FilePath, this.Library);
+        this.libraryRepository.Save(this.Library);
     }
 
     [RelayCommand]

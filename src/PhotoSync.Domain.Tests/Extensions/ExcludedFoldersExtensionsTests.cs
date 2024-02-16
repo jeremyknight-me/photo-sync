@@ -30,9 +30,8 @@ public class ExcludedFoldersExtensionsTests
     }
 
     private IEnumerable<ExcludedFolder> GetSampleData()
-        => new List<ExcludedFolder>
-        {
+        => [
             ExcludedFolder.Create(SourceFolderId.New(), "a\\b"),
             ExcludedFolder.Create(SourceFolderId.New(), "a\\b\\c")
-        };
+        ];
 }
