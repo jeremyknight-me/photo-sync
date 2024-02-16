@@ -1,4 +1,4 @@
-﻿namespace PhotoSync.Views.DisplayLibrary;
+﻿namespace PhotoSync.Views.DisplaySourceFolder;
 
 public partial class LibraryFolderViewModel
 {

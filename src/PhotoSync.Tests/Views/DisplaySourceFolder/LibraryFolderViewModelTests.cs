@@ -1,6 +1,6 @@
-﻿using PhotoSync.Views.DisplayLibrary;
+﻿using PhotoSync.Views.DisplaySourceFolder;
 
-namespace PhotoSync.Tests.Views.DisplayLibrary;
+namespace PhotoSync.Tests.Views.DisplaySourceFolder;
 
 public class LibraryFolderViewModelTests
 {
