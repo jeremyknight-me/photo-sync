@@ -13,6 +13,7 @@ public sealed class SourceFolder : Entity<SourceFolderId>
     }
 
     public required string FullPath { get; init; }
+    public DateTimeOffset? LastRefreshed { get; private set; } = null;
 
     public IReadOnlyList<ExcludedFolder> ExcludedFolders
     {
@@ -103,4 +104,7 @@ public sealed class SourceFolder : Entity<SourceFolderId>
             this.excludedFolders.Remove(folder);
         }
     }
+
+    public void UpdateLastRefreshed(DateTimeOffset date)
+        => this.LastRefreshed = date;
 }

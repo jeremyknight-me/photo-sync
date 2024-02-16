@@ -7,9 +7,20 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
     public const string DefaultLibraryFileName = "photo-sync.db";
 
     private readonly List<SourceFolder> sourceFolders = [];
+    private readonly List<Destination> destinations = [];
 
     private PhotoLibrary() : base(PhotoLibraryId.New())
     {
+    }
+
+    public IReadOnlyList<Destination> Destinations
+    {
+        get => this.destinations.AsReadOnly();
+        init
+        {
+            this.destinations.Clear();
+            this.destinations.AddRange(value);
+        }
     }
 
     public IReadOnlyList<SourceFolder> SourceFolders
@@ -22,32 +33,31 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
         }
     }
 
-    public string FilePath { get; private set; }
-    public DateTimeOffset? LastRefreshed { get; private set; } = null;
-    public DateTimeOffset? LastSynced { get; private set; } = null;
-
-    public string DestinationFolder => Path.GetDirectoryName(this.FilePath) ?? string.Empty;
-    public string FileName => Path.GetFileName(this.FilePath);
-
-    public void SetFilePath(string fileName)
+    private string filePath = string.Empty;
+    public string FilePath
     {
-        ArgumentException.ThrowIfNullOrEmpty(fileName, nameof(fileName));
-        if (!string.IsNullOrWhiteSpace(this.FilePath))
+        get => this.filePath;
+        set
         {
-            throw new InvalidOperationException("File path can only be set on a newly opened library.");
-        }
+            ArgumentException.ThrowIfNullOrWhiteSpace(value, nameof(value));
+            if (!string.IsNullOrWhiteSpace(this.filePath))
+            {
+                throw new InvalidOperationException("File path can only be set on a newly opened library.");
+            }
 
-        var trimmed = fileName.Trim();
-        if (!File.Exists(trimmed))
-        {
-            throw new FileNotFoundException("File does not exist.");
-        }
+            var trimmed = value.Trim();
+            if (!File.Exists(trimmed))
+            {
+                throw new FileNotFoundException("File does not exist.");
+            }
 
-        this.FilePath = trimmed;
+            this.filePath = trimmed;
+        }
     }
 
-    public void UpdateLastRefreshed(DateTimeOffset date)
-        => this.LastRefreshed = date;
+    public DateTimeOffset? LastRefreshed => this.sourceFolders.Count > 0 ? this.sourceFolders.Max(x => x.LastRefreshed) : null;
+    
+    public string FileName => Path.GetFileName(this.FilePath);
 
     public static PhotoLibrary Create(string filePath)
         => new() { FilePath = filePath.Trim() };
