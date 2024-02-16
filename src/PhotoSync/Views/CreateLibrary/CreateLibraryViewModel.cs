@@ -7,12 +7,10 @@ using Microsoft.Win32;
 using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Entities;
 using PhotoSync.Extensions;
-using PhotoSync.Views;
 
-namespace PhotoSync.ViewModels;
+namespace PhotoSync.Views.CreateLibrary;
 
-[INotifyPropertyChanged]
-public partial class CreateLibraryViewModel
+public partial class CreateLibraryViewModel : ObservableObject
 {
     private const string destinationFileTooltip = "Destination file name";
     private const string destinationFolderTooltip = "Destination folder path";
@@ -25,9 +23,6 @@ public partial class CreateLibraryViewModel
 
     [ObservableProperty]
     private string destinationFileName = PhotoLibrary.DefaultLibraryFileName;
-
-    [ObservableProperty]
-    private string sourceFolder;
 
     public CreateLibraryViewModel(
         IServiceProvider serviceProvider,
@@ -43,7 +38,7 @@ public partial class CreateLibraryViewModel
     [RelayCommand]
     private void Cancel(Window currentWindow)
     {
-        var next = this.services.GetRequiredService<MainWindow>();
+        var next = this.services.GetRequiredService<Views.Main.MainWindow>();
         next.Show();
         currentWindow.Close();
     }
@@ -54,7 +49,7 @@ public partial class CreateLibraryViewModel
         var errors = this.Validate();
         if (errors.Any())
         {
-            var validationWindow = new ValidationErrorWindow(errors);
+            var validationWindow = new DisplayValidationError.DisplayValidationErrorWindow(errors);
             validationWindow.ShowDialog();
             return;
         }
@@ -62,7 +57,7 @@ public partial class CreateLibraryViewModel
         var filePath = Path.Combine(this.DestinationFolder, this.DestinationFileName);
         var library = this.libraryRepository.Create(filePath);
 
-        var next = this.services.GetRequiredService<LibraryWindow>();
+        var next = this.services.GetRequiredService<Views.DisplayLibrary.DisplayLibraryWindow>();
         next.ViewModel.SetLibrary(library);
         next.Show();
         currentWindow.Close();
@@ -78,18 +73,6 @@ public partial class CreateLibraryViewModel
         }
 
         this.DestinationFolder = path;
-    }
-
-    [RelayCommand]
-    private void GetSourceFolderPath()
-    {
-        var path = this.GetFolderPath("Select source folder");
-        if (string.IsNullOrEmpty(path))
-        {
-            return;
-        }
-
-        this.SourceFolder = path;
     }
 
     private string GetFolderPath(string description)
@@ -128,11 +111,6 @@ public partial class CreateLibraryViewModel
         if (string.IsNullOrWhiteSpace(this.DestinationFolder))
         {
             errors.AddError("Destination", "Destination requires a folder path");
-        }
-
-        if (string.IsNullOrWhiteSpace(this.SourceFolder))
-        {
-            errors.AddError("Source", "Source requires a folder path");
         }
 
         return errors;

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PhotoSync.ViewModels;
+namespace PhotoSync.Views.DisplayLibrary;
 
-[INotifyPropertyChanged]
-public partial class CheckboxViewModel
+public partial class CheckboxViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CheckedVisibility))]
@@ -15,8 +13,8 @@ public partial class CheckboxViewModel
     [ObservableProperty]
     private bool isEnabled = false;
 
-    public Visibility CheckedVisibility => this.isChecked ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility UncheckedVisibility => this.isChecked ? Visibility.Collapsed : Visibility.Visible;
+    public Visibility CheckedVisibility => this.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility UncheckedVisibility => this.IsChecked ? Visibility.Collapsed : Visibility.Visible;
 
     public Action<bool> OnCheckedChanged { get; init; }
 

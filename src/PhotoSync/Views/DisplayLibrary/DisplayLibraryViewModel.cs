@@ -1,15 +1,12 @@
-﻿using System.IO;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Entities;
-using PhotoSync.Domain.Extensions;
 using PhotoSync.Domain.Operations;
 
-namespace PhotoSync.ViewModels;
+namespace PhotoSync.Views.DisplayLibrary;
 
-[INotifyPropertyChanged]
-public partial class LibraryViewModel
+public partial class DisplayLibraryViewModel : ObservableObject
 {
     private readonly IPhotoLibraryRepository libraryRepository;
     private readonly IRefreshLibraryOperation refreshOperation;
@@ -44,7 +41,7 @@ public partial class LibraryViewModel
     [ObservableProperty]
     private int photoSyncCount = 0;
 
-    public LibraryViewModel(
+    public DisplayLibraryViewModel(
         IPhotoLibraryRepository photoLibraryRepository,
         IRefreshLibraryOperation refreshLibraryOperation)
     {

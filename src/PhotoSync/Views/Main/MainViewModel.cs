@@ -3,9 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using PhotoSync.Domain.Abstractions;
-using PhotoSync.Views;
 
-namespace PhotoSync.ViewModels;
+namespace PhotoSync.Views.Main;
 
 public partial class MainViewModel
 {
@@ -30,7 +29,7 @@ public partial class MainViewModel
         }
 
         var library = this.libraryRepository.Open(path);
-        var next = this.services.GetRequiredService<LibraryWindow>();
+        var next = this.services.GetRequiredService<DisplayLibrary.DisplayLibraryWindow>();
         next.ViewModel.SetLibrary(library);
         next.Show();
         currentWindow.Close();
@@ -39,7 +38,7 @@ public partial class MainViewModel
     [RelayCommand]
     private void CreateLibrary(Window currentWindow)
     {
-        var next = this.services.GetRequiredService<CreateLibraryWindow>();
+        var next = this.services.GetRequiredService<CreateLibrary.CreateLibraryWindow>();
         next.Show();
         currentWindow.Close();
     }

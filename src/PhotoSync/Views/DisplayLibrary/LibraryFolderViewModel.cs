@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PhotoSync.ViewModels;
+﻿namespace PhotoSync.Views.DisplayLibrary;
 
 public partial class LibraryFolderViewModel
 {
@@ -14,7 +12,7 @@ public partial class LibraryFolderViewModel
 
     public bool IsExcluded
     {
-        get => (this.Parent is not null && this.Parent.IsExcluded) || this.isExcluded;
+        get => this.Parent is not null && this.Parent.IsExcluded || this.isExcluded;
         init => this.isExcluded = value;
     }
 

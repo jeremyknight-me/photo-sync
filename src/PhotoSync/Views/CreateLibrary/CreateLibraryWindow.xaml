@@ -1,0 +1,53 @@
+﻿<Window x:Class="PhotoSync.Views.CreateLibrary.CreateLibraryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PhotoSync.Views.CreateLibrary"
+        mc:Ignorable="d"
+        Background="{StaticResource DarkGrayBrush}"
+        Title="Create New Library" Height="145" Width="600">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="5 0 0 0" />
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Label Content="Destination File Path" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="Select"
+                Command="{Binding GetDestinationFolderPathCommand}" />
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Destination Folder"
+                       ToolTip="{Binding DestinationFolderTooltip}" />
+                <TextBox HorizontalAlignment="Stretch" 
+                     IsReadOnly="True"
+                     Text="{Binding DestinationFolder}"
+                     ToolTip="{Binding DestinationFolderTooltip}" />
+            </StackPanel>
+
+            <StackPanel  Grid.Column="2">
+                <TextBlock Text="Destination File"
+                       ToolTip="{Binding DestinationFileTooltip}" />
+                <TextBox HorizontalAlignment="Stretch"
+                     Text="{Binding DestinationFileName}"
+                     ToolTip="{Binding DestinationFileTooltip}" />
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center">
+            <Button Content="Create"
+                Command="{Binding CreateCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+            <Button Content="Cancel"
+                Command="{Binding CancelCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

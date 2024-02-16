@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 
 namespace PhotoSync.ViewModels;
 
-public partial class ValidationErrorViewModel
+public partial class DisplayValidationErrorViewModel
 {
-    private readonly List<string> errors = new();
+    private readonly List<string> errors = [];
 
-    public ValidationErrorViewModel(IDictionary<string, IList<string>> errorDictionary)
+    public DisplayValidationErrorViewModel(IDictionary<string, IList<string>> errorDictionary)
     {
         foreach (var error in errorDictionary)
         {

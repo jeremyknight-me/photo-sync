@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using PhotoSync.ViewModels;
+﻿using PhotoSync.Views.DisplayLibrary;
 
-namespace PhotoSync.Tests.ViewModels;
+namespace PhotoSync.Tests.Views.DisplayLibrary;
 
 public class LibraryFolderViewModelTests
 {

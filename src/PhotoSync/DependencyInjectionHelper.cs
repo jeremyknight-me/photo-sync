@@ -3,8 +3,10 @@ using PhotoSync.Data.Sqlite;
 using PhotoSync.Data.Sqlite.Repositories;
 using PhotoSync.Domain.Abstractions;
 using PhotoSync.Domain.Operations;
-using PhotoSync.ViewModels;
 using PhotoSync.Views;
+using PhotoSync.Views.CreateLibrary;
+using PhotoSync.Views.DisplayLibrary;
+using PhotoSync.Views.Main;
 
 namespace PhotoSync;
 
@@ -20,6 +22,7 @@ internal static class DependencyInjectionHelper
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<IGetPhotosOperation, GetPhotosOperation>();
+        services.AddTransient<IRefreshSourceFolderOperation, RefreshSourceFolderOperation>();
         services.AddTransient<IRefreshLibraryOperation, RefreshLibraryOperation>();
 
         services.AddSingleton<PhotoSyncContextFactory>();
@@ -33,7 +36,7 @@ internal static class DependencyInjectionHelper
         services.AddTransient<CreateLibraryViewModel>();
         services.AddTransient<CreateLibraryWindow>();
 
-        services.AddTransient<LibraryViewModel>();
-        services.AddTransient<LibraryWindow>();
+        services.AddTransient<DisplayLibraryViewModel>();
+        services.AddTransient<DisplayLibraryWindow>();
     }
 }

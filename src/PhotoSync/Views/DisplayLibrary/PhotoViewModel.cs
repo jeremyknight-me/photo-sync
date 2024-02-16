@@ -2,10 +2,9 @@
 using PhotoSync.Domain.Entities;
 using PhotoSync.Domain.Enums;
 
-namespace PhotoSync.ViewModels;
+namespace PhotoSync.Views.DisplayLibrary;
 
-[INotifyPropertyChanged]
-public partial class PhotoViewModel
+public partial class PhotoViewModel : ObservableObject
 {
     [ObservableProperty]
     private string fullPath;
