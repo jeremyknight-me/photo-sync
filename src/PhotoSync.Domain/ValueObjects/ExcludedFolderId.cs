@@ -1,8 +1,12 @@
-﻿using StronglyTypedIds;
+﻿namespace PhotoSync.Domain.ValueObjects;
 
-namespace PhotoSync.Domain.ValueObjects;
-
-[StronglyTypedId(Template.Guid, "guid-efcore")]
-public partial struct ExcludedFolderId
+public sealed record ExcludedFolderId : GuidIdBase
 {
+    private ExcludedFolderId(Guid value)
+        : base(value)
+    {
+    }
+
+    public static ExcludedFolderId New() => new(Guid.NewGuid());
+    public static ExcludedFolderId New(Guid value) => new(value);
 }

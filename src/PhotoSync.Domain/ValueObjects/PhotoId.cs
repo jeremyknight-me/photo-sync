@@ -1,8 +1,12 @@
-﻿using StronglyTypedIds;
+﻿namespace PhotoSync.Domain.ValueObjects;
 
-namespace PhotoSync.Domain.ValueObjects;
-
-[StronglyTypedId(Template.Guid, "guid-efcore")]
-public partial struct PhotoId
+public sealed record PhotoId : GuidIdBase
 {
+    private PhotoId(Guid value)
+        : base(value)
+    {
+    }
+
+    public static PhotoId New() => new(Guid.NewGuid());
+    public static PhotoId New(Guid value) => new(value);
 }

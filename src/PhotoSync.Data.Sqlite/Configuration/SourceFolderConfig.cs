@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PhotoSync.Data.Sqlite.Configuration.Converters;
 using PhotoSync.Domain.Entities;
-using PhotoSync.Domain.ValueObjects;
 
 namespace PhotoSync.Data.Sqlite.Configuration;
 
@@ -12,7 +12,7 @@ internal sealed class SourceFolderConfig : IEntityTypeConfiguration<SourceFolder
         builder.ToTable("SourceFolders");
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasConversion(new SourceFolderId.EfCoreValueConverter());
+        builder.Property(x => x.Id).HasConversion(new SourceFolderIdValueConverter());
         builder.Property(x => x.FullPath).IsRequired();
 
         builder.HasIndex(x => x.FullPath).IsUnique();
