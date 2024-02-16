@@ -38,7 +38,7 @@ public partial class CreateLibraryViewModel : ObservableObject
     [RelayCommand]
     private void Cancel(Window currentWindow)
     {
-        var next = this.services.GetRequiredService<Views.Main.MainWindow>();
+        var next = this.services.GetRequiredService<Main.MainWindow>();
         next.Show();
         currentWindow.Close();
     }

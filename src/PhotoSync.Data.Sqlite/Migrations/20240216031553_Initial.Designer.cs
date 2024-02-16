@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoSync.Data.Sqlite;
 
@@ -10,9 +11,11 @@ using PhotoSync.Data.Sqlite;
 namespace PhotoSync.Data.Sqlite.Migrations
 {
     [DbContext(typeof(PhotoSyncContext))]
-    partial class PhotoSyncContextModelSnapshot : ModelSnapshot
+    [Migration("20240216031553_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");

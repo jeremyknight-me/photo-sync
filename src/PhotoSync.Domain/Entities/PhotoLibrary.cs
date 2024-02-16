@@ -56,7 +56,6 @@ public sealed class PhotoLibrary : Entity<PhotoLibraryId>
     }
 
     public DateTimeOffset? LastRefreshed => this.sourceFolders.Count > 0 ? this.sourceFolders.Max(x => x.LastRefreshed) : null;
-    
     public string FileName => Path.GetFileName(this.FilePath);
 
     public static PhotoLibrary Create(string filePath)
